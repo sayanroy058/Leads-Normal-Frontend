@@ -1,0 +1,538 @@
+
+
+.built-section {
+  position: relative;
+
+  width: 100%;
+
+  padding: 110px 0 120px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 50%,
+      rgba(112, 195, 144, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(91, 124, 143, 0.08),
+      transparent 30%
+    ),
+    #ffffff;
+}
+
+.built-container {
+  position: relative;
+
+  width: min(1180px, 92%);
+
+  margin: 0 auto;
+
+  z-index: 2;
+}
+
+
+
+.built-glow {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  filter: blur(80px);
+
+  opacity: 0.55;
+}
+
+.built-glow-one {
+  top: 120px;
+  left: -180px;
+
+  width: 350px;
+  height: 350px;
+
+  background: rgba(112, 195, 144, 0.12);
+}
+
+.built-glow-two {
+  right: -180px;
+  bottom: 80px;
+
+  width: 360px;
+  height: 360px;
+
+  background: rgba(91, 124, 143, 0.10);
+}
+
+
+
+.built-heading {
+  position: relative;
+
+  max-width: 720px;
+
+  margin: 0 auto 65px;
+
+  text-align: center;
+}
+
+.built-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 18px;
+
+  color: #70c390;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2.5px;
+}
+
+.built-heading h2 {
+  margin: 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: clamp(36px, 4.5vw, 56px);
+
+  line-height: 1.08;
+
+  letter-spacing: -2.6px;
+
+  font-weight: 800;
+}
+
+.built-heading h2 span {
+  display: inline;
+
+  background:
+    linear-gradient(
+      90deg,
+      #1c2143,
+      #42586f,
+      #70c390,
+      #7de19a
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+.built-heading p {
+  max-width: 620px;
+
+  margin: 20px auto 0;
+
+  color: #5b7c8f;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+}
+
+
+
+.built-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+
+
+.built-card {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  min-height: 125px;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(244, 250, 246, 0.96)
+    );
+
+  border: 1px solid
+    rgba(112, 195, 144, 0.14);
+
+  box-shadow:
+    0 8px 25px
+      rgba(28, 33, 67, 0.035);
+
+  overflow: hidden;
+
+  animation:
+    builtCardFloat
+    5s
+    ease-in-out
+    infinite;
+
+  animation-delay: var(--delay);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+
+.built-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 3px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #70c390,
+      #7de19a,
+      #5b7c8f
+    );
+
+  transform: scaleY(0);
+
+  transform-origin: bottom;
+
+  transition:
+    transform 0.35s ease;
+}
+
+.built-card:hover {
+  transform:
+    translateY(-7px);
+
+  border-color:
+    rgba(112, 195, 144, 0.38);
+
+  box-shadow:
+    0 20px 45px
+      rgba(91, 124, 143, 0.14);
+}
+
+.built-card:hover::before {
+  transform: scaleY(1);
+}
+
+
+
+.built-icon {
+  flex-shrink: 0;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  color: #5b7c8f;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3f7f5,
+      #e8f7ed
+    );
+
+  border: 1px solid
+    rgba(112, 195, 144, 0.12);
+
+  transition:
+    color 0.35s ease,
+    background 0.35s ease,
+    transform 0.35s ease;
+}
+
+.built-card:hover .built-icon {
+  color: #1c2143;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e8f7ed,
+      #dff6e7
+    );
+
+  transform:
+    scale(1.06)
+    rotate(-3deg);
+}
+
+
+
+.built-card-content {
+  min-width: 0;
+}
+
+.built-card-content h3 {
+  margin: 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 16px;
+
+  font-weight: 750;
+
+  letter-spacing: -0.3px;
+}
+
+.built-card-content p {
+  margin: 7px 0 0;
+
+  color: #5b7c8f;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.55;
+}
+
+
+
+.built-arrow {
+  position: absolute;
+
+  right: 20px;
+  top: 20px;
+
+  color: #aab8bf;
+
+  font-size: 18px;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.built-card:hover .built-arrow {
+  color: #70c390;
+
+  transform:
+    translate(3px, -3px);
+}
+
+
+
+@keyframes builtCardFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+
+
+.built-bottom {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 22px;
+
+  margin-top: 60px;
+}
+
+.built-bottom p {
+  margin: 0;
+
+  color: #7b919e;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+.built-bottom strong {
+  color: #70c390;
+
+  font-weight: 700;
+}
+
+.built-line {
+  width: 100px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #c9ead5
+    );
+}
+
+.built-line:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      #c9ead5,
+      transparent
+    );
+}
+
+
+
+@media (max-width: 900px) {
+  .built-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+
+@media (max-width: 650px) {
+  .built-section {
+    padding: 80px 0 90px;
+  }
+
+  .built-heading {
+    margin-bottom: 45px;
+  }
+
+  .built-heading h2 {
+    font-size: 35px;
+
+    letter-spacing: -1.7px;
+  }
+
+  .built-heading p {
+    font-size: 14px;
+  }
+
+  .built-grid {
+    grid-template-columns: 1fr;
+
+    gap: 13px;
+  }
+
+  .built-card {
+    min-height: 105px;
+
+    padding: 20px;
+  }
+
+  .built-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .built-bottom {
+    margin-top: 40px;
+  }
+
+  .built-line {
+    display: none;
+  }
+
+  .built-bottom p {
+    white-space: normal;
+
+    text-align: center;
+
+    line-height: 1.6;
+  }
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .built-card {
+    animation: none;
+  }
+}
+
+
+
+.built-card {
+  overflow: hidden;
+}
+
+/* Light moving across the card */
+
+.built-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(125, 225, 154, 0.32),
+    rgba(255, 255, 255, 0.70),
+    rgba(125, 225, 154, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  pointer-events: none;
+
+  transition: left 0.7s ease;
+}
+
+.built-card:hover::after {
+  left: 140%;
+}

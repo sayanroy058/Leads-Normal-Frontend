@@ -1,0 +1,1291 @@
+
+
+.education-hero {
+  position: relative;
+  width: 100%;
+  min-height: 760px;
+
+  overflow: hidden;
+
+  padding: 145px 0 110px;
+
+  background:
+    radial-gradient(
+      circle at 82% 25%,
+      rgba(112, 195, 144, 0.13),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 75%,
+      rgba(112, 195, 144, 0.08),
+      transparent 28%
+    ),
+    #ffffff;
+
+  color: #1c2143;
+}
+
+
+
+
+.education-hero-glow {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  filter: blur(80px);
+}
+
+
+.education-hero-glow-one {
+  width: 430px;
+  height: 430px;
+
+  top: -220px;
+  right: 8%;
+
+  background: rgba(112, 195, 144, 0.10);
+}
+
+
+.education-hero-glow-two {
+  width: 350px;
+  height: 350px;
+
+  bottom: -200px;
+  left: -150px;
+
+  background: rgba(112, 195, 144, 0.07);
+}
+
+
+
+
+.education-hero-container {
+  position: relative;
+  z-index: 2;
+
+  width: min(1320px, 92%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.88fr)
+    minmax(0, 1.12fr);
+
+  align-items: center;
+
+  gap: 70px;
+}
+
+
+
+
+.education-hero-content {
+  max-width: 610px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.education-hero-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 24px;
+
+  padding: 9px 15px;
+
+  border:
+    1px solid
+    rgba(112, 195, 144, 0.25);
+
+  border-radius: 999px;
+
+  background:
+    rgba(112, 195, 144, 0.06);
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+
+.education-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 5px
+    rgba(112, 195, 144, 0.12),
+
+    0 0 15px
+    rgba(112, 195, 144, 0.45);
+
+  animation:
+    educationDotPulse
+    2.5s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes educationDotPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.education-hero h1 {
+  margin: 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size:
+    clamp(48px, 5.2vw, 72px);
+
+  line-height: 1.04;
+
+  letter-spacing: -3.5px;
+
+  font-weight: 800;
+}
+
+
+.education-hero h1 span {
+  color: #70c390;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.education-hero-description {
+  max-width: 570px;
+
+  margin: 27px 0 0;
+
+  color: #667085;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.education-hero-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-top: 34px;
+}
+
+
+/* PRIMARY */
+
+.education-hero-primary {
+  min-height: 53px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 0 23px;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #70c390,
+      #55ad76
+    );
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+  box-shadow:
+    0 13px 30px
+    rgba(112, 195, 144, 0.23);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.education-hero-primary:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 38px
+    rgba(112, 195, 144, 0.30);
+}
+
+
+.education-hero-primary span {
+  font-size: 18px;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+.education-hero-primary:hover span {
+  transform: translateX(4px);
+}
+
+
+/* SECONDARY */
+
+.education-hero-secondary {
+  min-height: 53px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 22px;
+
+  border:
+    1px solid
+    rgba(28, 33, 67, 0.12);
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #1c2143;
+
+  text-decoration: none;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 25px
+    rgba(28, 33, 67, 0.05);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.education-hero-secondary:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(112, 195, 144, 0.35);
+
+  box-shadow:
+    0 13px 30px
+    rgba(28, 33, 67, 0.08);
+}
+
+
+/* =========================================================
+   TRUST
+========================================================= */
+
+.education-hero-trust {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-top: 27px;
+
+  color: #7b8494;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.education-trust-icon {
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eaf8ef;
+
+  color: #39885a;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   VISUAL
+========================================================= */
+
+.education-hero-visual {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+
+  padding: 20px 0;
+}
+
+
+/* =========================================================
+   DASHBOARD GLOW
+========================================================= */
+
+.education-dashboard-glow {
+  position: absolute;
+
+  width: 80%;
+
+  height: 75%;
+
+  top: 12%;
+  left: 10%;
+
+  border-radius: 50%;
+
+  background:
+    rgba(112, 195, 144, 0.15);
+
+  filter: blur(65px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   DASHBOARD FRAME
+========================================================= */
+
+.education-dashboard-frame {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  padding: 10px;
+
+  border:
+    1px solid
+    rgba(112, 195, 144, 0.20);
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 35px 80px
+    rgba(28, 33, 67, 0.12),
+
+    0 10px 30px
+    rgba(112, 195, 144, 0.08);
+
+  backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+
+.education-dashboard-frame:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 42px 90px
+    rgba(28, 33, 67, 0.15);
+}
+
+
+/* =========================================================
+   TOP LINE
+========================================================= */
+
+.education-dashboard-top-line {
+  height: 7px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding-left: 5px;
+
+  margin-bottom: 5px;
+}
+
+
+.education-dashboard-top-line span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #dcefe2;
+}
+
+
+/* =========================================================
+   DASHBOARD IMAGE
+========================================================= */
+
+.education-dashboard-image {
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 13px;
+}
+
+
+/* =========================================================
+   FLOATING CARD
+========================================================= */
+
+.education-floating-card {
+  position: absolute;
+
+  z-index: 4;
+
+  left: -25px;
+
+  bottom: 4px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 13px 16px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.9);
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 18px 40px
+    rgba(28, 33, 67, 0.13);
+}
+
+
+.education-floating-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 9px;
+
+  background: #eaf8ef;
+
+  color: #39885a;
+
+  font-size: 14px;
+}
+
+
+.education-floating-card strong {
+  display: block;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+
+.education-floating-card span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #718096;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media screen and (max-width: 1050px) {
+
+  .education-hero {
+    padding: 120px 0 90px;
+  }
+
+  .education-hero-container {
+    grid-template-columns: 1fr;
+
+    gap: 65px;
+
+    text-align: center;
+  }
+
+  .education-hero-content {
+    max-width: 700px;
+
+    margin: 0 auto;
+  }
+
+  .education-hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .education-hero-buttons {
+    justify-content: center;
+  }
+
+  .education-hero-trust {
+    justify-content: center;
+  }
+
+  .education-hero-visual {
+    width: min(850px, 100%);
+
+    margin: 0 auto;
+  }
+
+  .education-floating-card {
+    left: 0;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  .education-hero {
+    min-height: auto;
+
+    padding: 95px 0 75px;
+  }
+
+  .education-hero-container {
+    width: 92%;
+
+    gap: 48px;
+  }
+
+  .education-hero-eyebrow {
+    margin-bottom: 19px;
+
+    padding: 8px 12px;
+
+    font-size: 8px;
+
+    letter-spacing: 1.1px;
+  }
+
+  .education-hero h1 {
+    font-size:
+      clamp(36px, 10vw, 50px);
+
+    line-height: 1.07;
+
+    letter-spacing: -2px;
+  }
+
+  .education-hero-description {
+    margin-top: 21px;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+  }
+
+  .education-hero-buttons {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 27px;
+  }
+
+  .education-hero-primary,
+  .education-hero-secondary {
+    width: 100%;
+
+    max-width: 320px;
+
+    min-height: 51px;
+  }
+
+  .education-hero-trust {
+    margin-top: 24px;
+
+    font-size: 9px;
+  }
+
+  .education-hero-visual {
+    padding: 10px 0 25px;
+  }
+
+  .education-dashboard-frame {
+    padding: 7px;
+
+    border-radius: 15px;
+  }
+
+  .education-dashboard-image {
+    border-radius: 10px;
+  }
+
+  .education-floating-card {
+    left: 5px;
+
+    bottom: 0;
+
+    padding: 10px 12px;
+
+    gap: 8px;
+
+    border-radius: 11px;
+  }
+
+  .education-floating-icon {
+    width: 27px;
+    height: 27px;
+
+    font-size: 11px;
+  }
+
+  .education-floating-card strong {
+    font-size: 9px;
+  }
+
+  .education-floating-card span {
+    font-size: 7px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 420px) {
+
+  .education-hero {
+    padding: 80px 0 65px;
+  }
+
+  .education-hero h1 {
+    font-size: 33px;
+
+    letter-spacing: -1.5px;
+  }
+
+  .education-hero-description {
+    font-size: 12px;
+  }
+
+  .education-hero-trust {
+    font-size: 8px;
+  }
+
+  .education-floating-card {
+    left: 0;
+
+    transform: scale(0.9);
+
+    transform-origin: left bottom;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .education-eyebrow-dot,
+  .education-dashboard-frame,
+  .education-hero-primary,
+  .education-hero-secondary {
+
+    animation: none !important;
+
+    transition: none !important;
+  }
+}
+/* =========================================================
+   PREMIUM 2026 MOTION SYSTEM
+========================================================= */
+
+/* ---------------------------------------------------------
+   HERO CONTENT REVEAL
+--------------------------------------------------------- */
+
+.education-hero-content {
+  animation: educationContentReveal 0.9s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.education-hero-eyebrow {
+  animation: educationEyebrowReveal 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.05s;
+}
+
+.education-hero h1 {
+  animation: educationHeadingReveal 0.95s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.12s;
+}
+
+.education-hero-description {
+  animation: educationTextReveal 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.22s;
+}
+
+.education-hero-buttons {
+  animation: educationTextReveal 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.32s;
+}
+
+.education-hero-trust {
+  animation: educationTextReveal 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.42s;
+}
+
+
+/* ---------------------------------------------------------
+   DASHBOARD ENTRANCE
+--------------------------------------------------------- */
+
+.education-hero-visual {
+  animation: educationVisualReveal 1s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.15s;
+}
+
+
+/* ---------------------------------------------------------
+   DASHBOARD FLOAT
+--------------------------------------------------------- */
+
+.education-dashboard-frame {
+  animation:
+    educationDashboardFloat
+    6s
+    ease-in-out
+    1s
+    infinite;
+}
+
+
+/* ---------------------------------------------------------
+   DASHBOARD GLOW
+--------------------------------------------------------- */
+
+.education-dashboard-glow {
+  animation:
+    educationGlowPulse
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+/* ---------------------------------------------------------
+   BACKGROUND GLOWS
+--------------------------------------------------------- */
+
+.education-hero-glow-one {
+  animation:
+    educationGlowMoveOne
+    9s
+    ease-in-out
+    infinite;
+}
+
+.education-hero-glow-two {
+  animation:
+    educationGlowMoveTwo
+    11s
+    ease-in-out
+    infinite;
+}
+
+
+/* ---------------------------------------------------------
+   FLOATING AI CARD
+--------------------------------------------------------- */
+
+.education-floating-card {
+  animation:
+    educationFloatingCard
+    5s
+    ease-in-out
+    1.2s
+    infinite;
+}
+
+
+/* =========================================================
+   KEYFRAMES
+========================================================= */
+
+@keyframes educationContentReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes educationEyebrowReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes educationHeadingReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+    filter: blur(7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+
+@keyframes educationTextReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes educationVisualReveal {
+
+  from {
+    opacity: 0;
+    transform:
+      translateX(45px)
+      scale(0.96);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(0)
+      scale(1);
+    filter: blur(0);
+  }
+}
+
+
+/* =========================================================
+   PREMIUM DASHBOARD FLOAT
+========================================================= */
+
+@keyframes educationDashboardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+
+/* =========================================================
+   SOFT GLOW PULSE
+========================================================= */
+
+@keyframes educationGlowPulse {
+
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW MOVEMENT
+========================================================= */
+
+@keyframes educationGlowMoveOne {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-25px, 18px, 0);
+  }
+}
+
+
+@keyframes educationGlowMoveTwo {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(30px, -20px, 0);
+  }
+}
+
+
+/* =========================================================
+   FLOATING CARD MOTION
+========================================================= */
+
+@keyframes educationFloatingCard {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+
+/* =========================================================
+   PREMIUM BUTTON MICRO-INTERACTION
+========================================================= */
+
+.education-hero-primary,
+.education-hero-secondary {
+  will-change: transform;
+}
+
+
+.education-hero-primary::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 75%
+    );
+
+  transform: translateX(-120%);
+
+  transition: transform 0.7s ease;
+
+  pointer-events: none;
+}
+
+
+.education-hero-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+
+.education-hero-primary:hover::before {
+  transform: translateX(120%);
+}
+
+
+/* =========================================================
+   EYEBROW DOT — MORE PREMIUM
+========================================================= */
+
+.education-eyebrow-dot {
+  will-change: transform, opacity;
+
+  animation:
+    educationDotPulse
+    2.8s
+    cubic-bezier(0.4, 0, 0.2, 1)
+    infinite;
+}
+
+
+/* =========================================================
+   DASHBOARD FRAME HOVER
+========================================================= */
+
+.education-dashboard-frame:hover {
+  transform:
+    translateY(-12px)
+    rotateX(1deg);
+
+  box-shadow:
+    0 45px 100px
+    rgba(28, 33, 67, 0.16),
+
+    0 15px 40px
+    rgba(112, 195, 144, 0.10);
+}
+
+
+/* =========================================================
+   IMAGE PREMIUM HOVER
+========================================================= */
+
+.education-dashboard-image {
+  transition:
+    transform 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.education-dashboard-frame:hover
+.education-dashboard-image {
+  transform: scale(1.012);
+}
+
+
+/* =========================================================
+   FLOATING CARD HOVER
+========================================================= */
+
+.education-floating-card {
+  transition:
+    transform 0.4s
+    cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+
+.education-floating-card:hover {
+  transform: translateY(-9px);
+
+  box-shadow:
+    0 24px 50px
+    rgba(28, 33, 67, 0.16);
+}
+
+
+/* =========================================================
+   MOBILE — KEEP ANIMATION SUBTLE
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  .education-dashboard-frame {
+    animation:
+      educationDashboardFloat
+      7s
+      ease-in-out
+      1s
+      infinite;
+  }
+
+  .education-floating-card {
+    animation:
+      educationFloatingCard
+      6s
+      ease-in-out
+      1.2s
+      infinite;
+  }
+
+  .education-hero-visual {
+    animation-delay: 0.1s;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .education-hero-content,
+  .education-hero-eyebrow,
+  .education-hero h1,
+  .education-hero-description,
+  .education-hero-buttons,
+  .education-hero-trust,
+  .education-hero-visual,
+  .education-dashboard-frame,
+  .education-dashboard-glow,
+  .education-hero-glow-one,
+  .education-hero-glow-two,
+  .education-floating-card,
+  .education-eyebrow-dot {
+
+    animation: none !important;
+  }
+
+  .education-dashboard-frame:hover,
+  .education-dashboard-frame:hover
+  .education-dashboard-image,
+  .education-floating-card:hover {
+
+    transform: none !important;
+  }
+}

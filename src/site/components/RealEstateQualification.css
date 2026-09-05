@@ -1,0 +1,663 @@
+
+
+.real-estate-qualification {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  padding: 125px 0 105px;
+
+  background:
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(112, 195, 144, 0.09),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(112, 195, 144, 0.07),
+      transparent 32%
+    ),
+    #ffffff;
+
+  color: #1c2143;
+}
+
+
+
+
+.qualification-container {
+  position: relative;
+  z-index: 2;
+
+  width: min(1180px, 92%);
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+
+  align-items: center;
+
+  gap: 80px;
+}
+
+
+
+
+.qualification-content {
+  max-width: 560px;
+}
+
+
+.qualification-label {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 20px;
+
+  color: #4eaa70;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+}
+
+
+.qualification-label::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  margin-right: 9px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 5px rgba(112, 195, 144, 0.10);
+}
+
+
+
+
+.qualification-heading {
+  margin: 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: clamp(40px, 4.5vw, 60px);
+
+  line-height: 1.06;
+
+  letter-spacing: -2.7px;
+
+  font-weight: 800;
+}
+
+
+.qualification-heading span {
+  color: #70c390;
+}
+
+
+
+
+.qualification-description {
+  max-width: 540px;
+
+  margin: 25px 0 0;
+
+  color: #667085;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+
+  font-weight: 400;
+}
+
+
+
+
+.qualification-points {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  margin-top: 31px;
+}
+
+
+.qualification-point {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 13px;
+}
+
+
+
+
+.qualification-check {
+  flex-shrink: 0;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 1px;
+
+  border-radius: 50%;
+
+  background: #eaf8ef;
+
+  color: #4eaa70;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.qualification-point strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 750;
+}
+
+
+.qualification-point span {
+  display: block;
+
+  color: #718096;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+
+
+.qualification-visual {
+  position: relative;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.qualification-glow {
+  position: absolute;
+
+  width: 440px;
+  height: 440px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: rgba(112, 195, 144, 0.13);
+
+  filter: blur(70px);
+
+  pointer-events: none;
+}
+
+
+
+
+.qualification-image-frame {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+
+  padding: 18px;
+
+  border: 1px solid rgba(112, 195, 144, 0.18);
+
+  border-radius: 28px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 25px 70px rgba(28, 33, 67, 0.10),
+    0 8px 25px rgba(112, 195, 144, 0.07);
+
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+
+
+.qualification-image-frame:hover {
+  transform: translateY(-7px);
+
+  border-color: rgba(112, 195, 144, 0.32);
+
+  box-shadow:
+    0 35px 85px rgba(28, 33, 67, 0.13),
+    0 12px 30px rgba(112, 195, 144, 0.10);
+}
+
+
+
+
+.qualification-image-inner {
+  position: relative;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: 19px;
+
+  background: #f5faf7;
+
+  border: 1px solid rgba(112, 195, 144, 0.10);
+}
+
+
+.qualification-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-width: 100%;
+
+  object-fit: contain;
+
+  object-position: center;
+
+  transition:
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.qualification-image-frame:hover .qualification-image {
+  transform: scale(1.025);
+}
+
+
+
+
+.qualification-floating-badge {
+  position: absolute;
+
+  right: 30px;
+  bottom: 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 9px 14px;
+
+  border: 1px solid rgba(112, 195, 144, 0.22);
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #1c2143;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  box-shadow:
+    0 10px 30px rgba(28, 33, 67, 0.12);
+
+  backdrop-filter: blur(12px);
+}
+
+
+.qualification-ai-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 4px rgba(112, 195, 144, 0.10),
+    0 0 12px rgba(112, 195, 144, 0.45);
+
+  animation: qualificationPulse 2.5s ease-in-out infinite;
+}
+
+
+@keyframes qualificationPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+
+
+.qualification-bottom {
+  position: relative;
+  z-index: 2;
+
+  width: min(900px, 90%);
+
+  margin: 65px auto 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 16px 22px;
+
+  border: 1px solid rgba(112, 195, 144, 0.18);
+
+  border-radius: 14px;
+
+  background: rgba(245, 250, 247, 0.72);
+
+  color: #667085;
+
+  text-align: center;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.qualification-bottom span {
+  flex-shrink: 0;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 5px rgba(112, 195, 144, 0.10);
+}
+
+
+
+
+@media screen and (max-width: 1000px) {
+
+  .real-estate-qualification {
+    padding: 100px 0 90px;
+  }
+
+  .qualification-container {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 45px;
+  }
+
+  .qualification-heading {
+    font-size: clamp(38px, 5vw, 52px);
+
+    letter-spacing: -2.2px;
+  }
+
+  .qualification-description {
+    font-size: 14px;
+  }
+
+  .qualification-image-frame {
+    padding: 14px;
+
+    border-radius: 23px;
+  }
+
+  .qualification-image-inner {
+    border-radius: 15px;
+  }
+
+}
+
+
+
+
+@media screen and (max-width: 750px) {
+
+  .real-estate-qualification {
+    padding: 80px 0 65px;
+  }
+
+  .qualification-container {
+    width: 92%;
+
+    grid-template-columns: 1fr;
+
+    gap: 45px;
+  }
+
+  .qualification-content {
+    max-width: 100%;
+
+    text-align: left;
+  }
+
+  .qualification-heading {
+    font-size: clamp(35px, 9vw, 48px);
+
+    line-height: 1.08;
+
+    letter-spacing: -1.8px;
+  }
+
+  .qualification-description {
+    margin-top: 20px;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+  .qualification-points {
+    gap: 16px;
+
+    margin-top: 26px;
+  }
+
+  .qualification-point strong {
+    font-size: 13px;
+  }
+
+  .qualification-point span {
+    font-size: 11px;
+  }
+
+  .qualification-visual {
+    width: 100%;
+  }
+
+  .qualification-glow {
+    width: 330px;
+    height: 330px;
+
+    filter: blur(55px);
+  }
+
+  .qualification-image-frame {
+    width: 100%;
+
+    padding: 11px;
+
+    border-radius: 20px;
+  }
+
+  .qualification-image-inner {
+    border-radius: 13px;
+  }
+
+  .qualification-floating-badge {
+    right: 21px;
+    bottom: 21px;
+
+    padding: 8px 11px;
+
+    font-size: 9px;
+  }
+
+  .qualification-bottom {
+    width: 92%;
+
+    margin-top: 42px;
+
+    padding: 14px 16px;
+
+    font-size: 10px;
+  }
+
+}
+
+
+
+
+@media screen and (max-width: 420px) {
+
+  .real-estate-qualification {
+    padding: 70px 0 55px;
+  }
+
+  .qualification-container {
+    gap: 38px;
+  }
+
+  .qualification-label {
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+  }
+
+  .qualification-heading {
+    font-size: 32px;
+
+    letter-spacing: -1.5px;
+  }
+
+  .qualification-description {
+    font-size: 12px;
+  }
+
+  .qualification-point {
+    gap: 10px;
+  }
+
+  .qualification-check {
+    width: 22px;
+    height: 22px;
+
+    font-size: 10px;
+  }
+
+  .qualification-point strong {
+    font-size: 12px;
+  }
+
+  .qualification-point span {
+    font-size: 10px;
+  }
+
+  .qualification-image-frame {
+    padding: 8px;
+
+    border-radius: 17px;
+  }
+
+  .qualification-image-inner {
+    border-radius: 11px;
+  }
+
+  .qualification-floating-badge {
+    right: 15px;
+    bottom: 15px;
+
+    padding: 7px 9px;
+
+    font-size: 8px;
+  }
+
+  .qualification-bottom {
+    font-size: 9px;
+
+    padding: 12px;
+  }
+
+}
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .qualification-image-frame,
+  .qualification-image {
+    transition: none !important;
+  }
+
+  .qualification-ai-dot {
+    animation: none !important;
+  }
+
+}

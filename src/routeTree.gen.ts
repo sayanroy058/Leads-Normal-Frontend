@@ -10,8 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SplatRouteImport } from './routes/$'
+import { Route as AllBlogsRouteImport } from './routes/all-blogs'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BlogsRouteImport } from './routes/blogs'
+import { Route as MarketingRouteImport } from './routes/marketing'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppCallerRouteImport } from './routes/app.caller'
@@ -20,12 +25,25 @@ import { Route as AppConversationsRouteImport } from './routes/app.conversations
 import { Route as AppEmailRouteImport } from './routes/app.email'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppStudioRouteImport } from './routes/app.studio'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as IndustriesEducationRouteImport } from './routes/industries.education'
+import { Route as IndustriesRealEstateRouteImport } from './routes/industries.real-estate'
 import { Route as AppLeadsIndexRouteImport } from './routes/app.leads.index'
 import { Route as AppLeadsLeadIdRouteImport } from './routes/app.leads.$leadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SplatRoute = SplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AllBlogsRoute = AllBlogsRouteImport.update({
+  id: '/all-blogs',
+  path: '/all-blogs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -36,6 +54,21 @@ const AppRoute = AppRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogsRoute = BlogsRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketingRoute = MarketingRouteImport.update({
+  id: '/marketing',
+  path: '/marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -78,6 +111,21 @@ const AppStudioRoute = AppStudioRouteImport.update({
   path: '/studio',
   getParentRoute: () => AppRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesEducationRoute = IndustriesEducationRouteImport.update({
+  id: '/industries/education',
+  path: '/industries/education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRealEstateRoute = IndustriesRealEstateRouteImport.update({
+  id: '/industries/real-estate',
+  path: '/industries/real-estate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppLeadsIndexRoute = AppLeadsIndexRouteImport.update({
   id: '/leads/',
   path: '/leads/',
@@ -91,8 +139,13 @@ const AppLeadsLeadIdRoute = AppLeadsLeadIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
+  '/all-blogs': typeof AllBlogsRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/blogs': typeof BlogsRoute
+  '/marketing': typeof MarketingRoute
+  '/pricing': typeof PricingRoute
   '/app/admin': typeof AppAdminRoute
   '/app/caller': typeof AppCallerRoute
   '/app/chat': typeof AppChatRoute
@@ -100,13 +153,21 @@ export interface FileRoutesByFullPath {
   '/app/email': typeof AppEmailRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/studio': typeof AppStudioRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/industries/education': typeof IndustriesEducationRoute
+  '/industries/real-estate': typeof IndustriesRealEstateRoute
   '/app/': typeof AppIndexRoute
   '/app/leads/$leadId': typeof AppLeadsLeadIdRoute
   '/app/leads/': typeof AppLeadsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
+  '/all-blogs': typeof AllBlogsRoute
   '/auth': typeof AuthRoute
+  '/blogs': typeof BlogsRoute
+  '/marketing': typeof MarketingRoute
+  '/pricing': typeof PricingRoute
   '/app/admin': typeof AppAdminRoute
   '/app/caller': typeof AppCallerRoute
   '/app/chat': typeof AppChatRoute
@@ -114,6 +175,9 @@ export interface FileRoutesByTo {
   '/app/email': typeof AppEmailRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/studio': typeof AppStudioRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/industries/education': typeof IndustriesEducationRoute
+  '/industries/real-estate': typeof IndustriesRealEstateRoute
   '/app': typeof AppIndexRoute
   '/app/leads/$leadId': typeof AppLeadsLeadIdRoute
   '/app/leads': typeof AppLeadsIndexRoute
@@ -121,8 +185,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
+  '/all-blogs': typeof AllBlogsRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/blogs': typeof BlogsRoute
+  '/marketing': typeof MarketingRoute
+  '/pricing': typeof PricingRoute
   '/app/admin': typeof AppAdminRoute
   '/app/caller': typeof AppCallerRoute
   '/app/chat': typeof AppChatRoute
@@ -130,6 +199,9 @@ export interface FileRoutesById {
   '/app/email': typeof AppEmailRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/studio': typeof AppStudioRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/industries/education': typeof IndustriesEducationRoute
+  '/industries/real-estate': typeof IndustriesRealEstateRoute
   '/app/': typeof AppIndexRoute
   '/app/leads/$leadId': typeof AppLeadsLeadIdRoute
   '/app/leads/': typeof AppLeadsIndexRoute
@@ -138,8 +210,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$'
+    | '/all-blogs'
     | '/app'
     | '/auth'
+    | '/blogs'
+    | '/marketing'
+    | '/pricing'
     | '/app/admin'
     | '/app/caller'
     | '/app/chat'
@@ -147,13 +224,21 @@ export interface FileRouteTypes {
     | '/app/email'
     | '/app/messages'
     | '/app/studio'
+    | '/blog/$slug'
+    | '/industries/education'
+    | '/industries/real-estate'
     | '/app/'
     | '/app/leads/$leadId'
     | '/app/leads/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
+    | '/all-blogs'
     | '/auth'
+    | '/blogs'
+    | '/marketing'
+    | '/pricing'
     | '/app/admin'
     | '/app/caller'
     | '/app/chat'
@@ -161,14 +246,22 @@ export interface FileRouteTypes {
     | '/app/email'
     | '/app/messages'
     | '/app/studio'
+    | '/blog/$slug'
+    | '/industries/education'
+    | '/industries/real-estate'
     | '/app'
     | '/app/leads/$leadId'
     | '/app/leads'
   id:
     | '__root__'
     | '/'
+    | '/$'
+    | '/all-blogs'
     | '/app'
     | '/auth'
+    | '/blogs'
+    | '/marketing'
+    | '/pricing'
     | '/app/admin'
     | '/app/caller'
     | '/app/chat'
@@ -176,6 +269,9 @@ export interface FileRouteTypes {
     | '/app/email'
     | '/app/messages'
     | '/app/studio'
+    | '/blog/$slug'
+    | '/industries/education'
+    | '/industries/real-estate'
     | '/app/'
     | '/app/leads/$leadId'
     | '/app/leads/'
@@ -183,8 +279,16 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SplatRoute: typeof SplatRoute
+  AllBlogsRoute: typeof AllBlogsRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BlogsRoute: typeof BlogsRoute
+  MarketingRoute: typeof MarketingRoute
+  PricingRoute: typeof PricingRoute
+  BlogSlugRoute: typeof BlogSlugRoute
+  IndustriesEducationRoute: typeof IndustriesEducationRoute
+  IndustriesRealEstateRoute: typeof IndustriesRealEstateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -194,6 +298,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$': {
+      id: '/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/all-blogs': {
+      id: '/all-blogs'
+      path: '/all-blogs'
+      fullPath: '/all-blogs'
+      preLoaderRoute: typeof AllBlogsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -208,6 +326,27 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blogs': {
+      id: '/blogs'
+      path: '/blogs'
+      fullPath: '/blogs'
+      preLoaderRoute: typeof BlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketing': {
+      id: '/marketing'
+      path: '/marketing'
+      fullPath: '/marketing'
+      preLoaderRoute: typeof MarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -266,6 +405,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppStudioRouteImport
       parentRoute: typeof AppRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries/education': {
+      id: '/industries/education'
+      path: '/industries/education'
+      fullPath: '/industries/education'
+      preLoaderRoute: typeof IndustriesEducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries/real-estate': {
+      id: '/industries/real-estate'
+      path: '/industries/real-estate'
+      fullPath: '/industries/real-estate'
+      preLoaderRoute: typeof IndustriesRealEstateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/leads/': {
       id: '/app/leads/'
       path: '/leads'
@@ -313,8 +473,16 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SplatRoute: SplatRoute,
+  AllBlogsRoute: AllBlogsRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
+  BlogsRoute: BlogsRoute,
+  MarketingRoute: MarketingRoute,
+  PricingRoute: PricingRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  IndustriesEducationRoute: IndustriesEducationRoute,
+  IndustriesRealEstateRoute: IndustriesRealEstateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,0 +1,797 @@
+/* =========================================================
+   GRADLEAD EDUCATION
+   STUDENT JOURNEY
+   NEW CLEAN STATIC DESIGN
+========================================================= */
+
+.education-student-journey {
+  width: 100%;
+  padding: 115px 0;
+
+  background: #ffffff;
+
+  color: #1c2143;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.education-student-journey-container {
+  width: min(1240px, 92%);
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.student-journey-header {
+  max-width: 760px;
+
+  margin: 0 auto 70px;
+
+  text-align: center;
+}
+
+
+.student-journey-label {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 8px 14px;
+
+  margin-bottom: 22px;
+
+  border: 1px solid #dceee4;
+
+  border-radius: 999px;
+
+  background: #f7fcf8;
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+}
+
+
+.student-journey-label-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+}
+
+
+.student-journey-header h2 {
+  margin: 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: clamp(44px, 5vw, 68px);
+
+  line-height: 1.04;
+
+  letter-spacing: -3.2px;
+
+  font-weight: 800;
+}
+
+
+.student-journey-header h2 span {
+  color: #70c390;
+}
+
+
+.student-journey-header p {
+  max-width: 650px;
+
+  margin: 24px auto 0;
+
+  color: #68748a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+}
+
+
+
+
+.student-journey-wrapper {
+  position: relative;
+
+  padding: 45px 42px 35px;
+
+  border: 1px solid #e1e9e4;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #fbfdfc
+    );
+
+  box-shadow:
+    0 25px 70px rgba(28, 33, 67, 0.065);
+}
+
+
+
+
+.journey-top-label {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  margin-bottom: 32px;
+}
+
+
+.journey-top-label span {
+  color: #a0a9b6;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
+  text-align: center;
+}
+
+
+
+
+.student-journey-track {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 30px;
+
+  padding-top: 25px;
+}
+
+
+
+
+.journey-track-line {
+  position: absolute;
+
+  top: 51px;
+
+  left: 10%;
+
+  right: 10%;
+
+  height: 1px;
+
+  background: #d8ebe0;
+
+  z-index: 0;
+}
+
+
+
+
+.student-journey-item {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  min-width: 0;
+
+  z-index: 2;
+}
+
+
+
+
+.student-journey-node {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 28px;
+
+  border: 1px solid #d7ebe0;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(28, 33, 67, 0.07);
+}
+
+
+.student-journey-node span {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #edf8f1;
+
+  color: #39885a;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+
+
+.student-journey-content {
+  width: 100%;
+
+  min-height: 180px;
+
+  box-sizing: border-box;
+
+  padding: 22px;
+
+  border: 1px solid #e3e9e6;
+
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 12px 30px rgba(28, 33, 67, 0.045);
+}
+
+
+.journey-step-number {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #b0b8c2;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.journey-step-label {
+  display: inline-block;
+
+  margin-bottom: 13px;
+
+  color: #70a882;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.1px;
+}
+
+
+.student-journey-content h3 {
+  margin: 0 0 10px;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 16px;
+
+  line-height: 1.3;
+
+  letter-spacing: -0.4px;
+
+  font-weight: 800;
+}
+
+
+.student-journey-content p {
+  margin: 0;
+
+  color: #7a8597;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  line-height: 1.7;
+}
+
+
+
+
+.student-journey-item:nth-child(2)
+.student-journey-node span {
+  background: #eef8f2;
+}
+
+
+.student-journey-item:nth-child(3)
+.student-journey-node span {
+  background: #f0f9f4;
+}
+
+
+.student-journey-item:nth-child(4)
+.student-journey-node span {
+  background: #eaf7ef;
+}
+
+
+
+
+.student-journey-insight {
+  width: min(590px, 100%);
+
+  margin: 38px auto 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 17px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dcece3;
+
+  border-radius: 15px;
+
+  background: #f9fcfa;
+}
+
+
+.journey-insight-symbol {
+  width: 37px;
+  height: 37px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eaf8ef;
+
+  color: #70c390;
+
+  font-size: 16px;
+}
+
+
+.journey-insight-text {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.journey-insight-text span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #70a882;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.journey-insight-text strong {
+  display: block;
+
+  color: #394256;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+
+.journey-insight-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding-left: 14px;
+
+  border-left: 1px solid #e1e9e4;
+
+  color: #8b96a5;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 6px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+
+.journey-insight-status span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+}
+
+
+
+
+.student-journey-bottom {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  margin-top: 30px;
+}
+
+
+.student-journey-bottom p {
+  margin: 0;
+
+  color: #7d8797;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+
+.student-journey-bottom strong {
+  color: #39885a;
+}
+
+
+.bottom-line {
+  width: 55px;
+  height: 1px;
+
+  background: #dcebe2;
+}
+
+
+
+@media screen and (max-width: 950px) {
+
+  .education-student-journey {
+    padding: 90px 0;
+  }
+
+  .student-journey-wrapper {
+    padding: 38px 25px 30px;
+  }
+
+  .student-journey-track {
+    gap: 15px;
+  }
+
+  .student-journey-content {
+    padding: 17px;
+  }
+
+  .student-journey-content h3 {
+    font-size: 13px;
+  }
+
+  .student-journey-content p {
+    font-size: 9px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  .education-student-journey {
+    padding: 70px 0;
+  }
+
+
+  .student-journey-header {
+    margin-bottom: 40px;
+  }
+
+
+  .student-journey-header h2 {
+    font-size: 38px;
+
+    letter-spacing: -2px;
+  }
+
+
+  .student-journey-header p {
+    font-size: 13px;
+  }
+
+
+  .student-journey-wrapper {
+    padding: 30px 18px 25px;
+
+    border-radius: 22px;
+  }
+
+
+  /* TOP LABELS */
+
+  .journey-top-label {
+    display: none;
+  }
+
+
+  /* TRACK */
+
+  .student-journey-track {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+    padding: 5px 0 0;
+  }
+
+
+  /* VERTICAL LINE */
+
+  .journey-track-line {
+    top: 30px;
+
+    bottom: 30px;
+
+    left: 26px;
+
+    right: auto;
+
+    width: 1px;
+
+    height: auto;
+  }
+
+
+  /* ITEM */
+
+  .student-journey-item {
+    display: grid;
+
+    grid-template-columns: 52px minmax(0, 1fr);
+
+    gap: 14px;
+
+    align-items: start;
+  }
+
+
+  /* NODE */
+
+  .student-journey-node {
+    width: 52px;
+    height: 52px;
+
+    margin: 5px 0 0;
+
+    z-index: 3;
+  }
+
+
+  /* CONTENT */
+
+  .student-journey-content {
+    min-height: auto;
+
+    padding: 17px;
+
+    border-radius: 15px;
+  }
+
+
+  .student-journey-content h3 {
+    font-size: 13px;
+  }
+
+
+  .student-journey-content p {
+    font-size: 9px;
+
+    line-height: 1.6;
+  }
+
+
+  /* INSIGHT */
+
+  .student-journey-insight {
+    margin-top: 28px;
+
+    padding: 12px;
+
+    gap: 10px;
+  }
+
+
+  .journey-insight-text strong {
+    font-size: 8px;
+  }
+
+
+  .journey-insight-status {
+    display: none;
+  }
+
+
+  /* BOTTOM */
+
+  .student-journey-bottom {
+    gap: 8px;
+  }
+
+
+  .student-journey-bottom p {
+    font-size: 9px;
+  }
+
+
+  .bottom-line {
+    width: 25px;
+  }
+}
+
+
+
+@media screen and (max-width: 420px) {
+
+  .education-student-journey {
+    padding: 60px 0;
+  }
+
+
+  .student-journey-header h2 {
+    font-size: 32px;
+
+    letter-spacing: -1.5px;
+  }
+
+
+  .student-journey-header p {
+    font-size: 12px;
+  }
+
+
+  .student-journey-wrapper {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  .student-journey-item {
+    grid-template-columns: 45px minmax(0, 1fr);
+
+    gap: 10px;
+  }
+
+
+  .student-journey-node {
+    width: 45px;
+    height: 45px;
+  }
+
+
+  .student-journey-node span {
+    width: 31px;
+    height: 31px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+  }
+
+
+  .journey-track-line {
+    left: 22px;
+  }
+
+
+  .student-journey-content {
+    padding: 14px;
+  }
+
+
+  .student-journey-content h3 {
+    font-size: 12px;
+  }
+
+
+  .student-journey-content p {
+    font-size: 8px;
+  }
+
+
+  .student-journey-bottom p {
+    font-size: 8px;
+  }
+}

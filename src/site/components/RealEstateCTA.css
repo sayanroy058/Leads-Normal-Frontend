@@ -1,0 +1,575 @@
+/* =========================================================
+   GRADLEAD — REAL ESTATE FINAL CTA
+   WHITE THEME
+========================================================= */
+
+.real-estate-cta {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  padding: 120px 0 110px;
+
+  color: #1c2143;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+.real-estate-cta-grid {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.035;
+
+  background-image:
+    linear-gradient(
+      rgba(28, 33, 67, 0.35) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(28, 33, 67, 0.35) 1px,
+      transparent 1px
+    );
+
+  background-size: 42px 42px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black,
+    transparent 85%
+  );
+}
+
+
+/* =========================================================
+   GLOWS
+========================================================= */
+
+.real-estate-cta-glow {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  filter: blur(80px);
+}
+
+
+.real-estate-cta-glow-one {
+  width: 480px;
+  height: 480px;
+
+  top: -280px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  background: rgba(112, 195, 144, 0.10);
+}
+
+
+.real-estate-cta-glow-two {
+  width: 380px;
+  height: 380px;
+
+  right: -220px;
+  bottom: -250px;
+
+  background: rgba(112, 195, 144, 0.07);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.real-estate-cta-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(900px, 92%);
+
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.real-estate-cta-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 22px;
+
+  color: #4eaa70;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+}
+
+
+.cta-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 5px rgba(112, 195, 144, 0.10),
+    0 0 18px rgba(112, 195, 144, 0.35);
+
+  animation:
+    ctaDotPulse
+    2.5s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes ctaDotPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.real-estate-cta h2 {
+  margin: 0;
+
+  max-width: 850px;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size:
+    clamp(42px, 5.5vw, 70px);
+
+  line-height: 1.05;
+
+  letter-spacing: -3px;
+
+  font-weight: 800;
+}
+
+
+.real-estate-cta h2 span {
+  background:
+    linear-gradient(
+      100deg,
+      #70c390 0%,
+      #55ad76 50%,
+      #70c390 100%
+    );
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.real-estate-cta-description {
+  max-width: 650px;
+
+  margin: 27px auto 0;
+
+  color: #667085;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.real-estate-cta-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-top: 34px;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.real-estate-cta-primary {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  min-height: 54px;
+
+  padding: 0 23px;
+
+  border-radius: 11px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #70c390 0%,
+      #55ad76 55%,
+      #418b5e 100%
+    );
+
+  text-decoration: none;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+  box-shadow:
+    0 14px 32px rgba(28, 33, 67, 0.14),
+    0 0 0 1px rgba(112, 195, 144, 0.08);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.real-estate-cta-primary:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 20px 42px rgba(28, 33, 67, 0.18),
+    0 0 0 4px rgba(112, 195, 144, 0.10);
+}
+
+
+.cta-arrow {
+  font-size: 18px;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+.real-estate-cta-primary:hover .cta-arrow {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
+
+.real-estate-cta-secondary {
+  min-height: 54px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0 23px;
+
+  border-radius: 11px;
+
+  color: #1c2143;
+
+  background: #ffffff;
+
+  border:
+    1px solid
+    rgba(28, 33, 67, 0.12);
+
+  box-shadow:
+    0 8px 24px
+    rgba(28, 33, 67, 0.05);
+
+  text-decoration: none;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.real-estate-cta-secondary:hover {
+  transform: translateY(-3px);
+
+  background: #f8fcf9;
+
+  border-color:
+    rgba(112, 195, 144, 0.45);
+
+  box-shadow:
+    0 14px 30px
+    rgba(112, 195, 144, 0.10);
+}
+
+
+/* =========================================================
+   TRUST LINE
+========================================================= */
+
+.real-estate-cta-trust {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 42px;
+
+  color: #98a2b3;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.real-estate-cta-trust i {
+  color: #70c390;
+
+  font-style: normal;
+
+  opacity: 0.9;
+}
+
+
+.real-estate-cta-trust strong {
+  color: #667085;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media screen and (max-width: 800px) {
+
+  .real-estate-cta {
+    padding: 100px 0 90px;
+  }
+
+
+  .real-estate-cta h2 {
+    font-size:
+      clamp(38px, 7vw, 56px);
+
+    letter-spacing: -2.3px;
+  }
+
+
+  .real-estate-cta-description {
+    max-width: 590px;
+
+    font-size: 14px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 600px) {
+
+  .real-estate-cta {
+    padding: 82px 0 70px;
+  }
+
+
+  .real-estate-cta-container {
+    width: 92%;
+  }
+
+
+  .real-estate-cta-eyebrow {
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+  }
+
+
+  .real-estate-cta h2 {
+    font-size:
+      clamp(34px, 10vw, 48px);
+
+    line-height: 1.07;
+
+    letter-spacing: -1.8px;
+  }
+
+
+  .real-estate-cta-description {
+    margin-top: 21px;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+  }
+
+
+  .real-estate-cta-buttons {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 28px;
+  }
+
+
+  .real-estate-cta-primary,
+  .real-estate-cta-secondary {
+    width: 100%;
+
+    max-width: 320px;
+
+    min-height: 51px;
+  }
+
+
+  .real-estate-cta-trust {
+    margin-top: 31px;
+
+    font-size: 9px;
+
+    gap: 6px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 420px) {
+
+  .real-estate-cta {
+    padding: 70px 0 60px;
+  }
+
+
+  .real-estate-cta h2 {
+    font-size: 32px;
+
+    letter-spacing: -1.5px;
+  }
+
+
+  .real-estate-cta-description {
+    font-size: 12px;
+  }
+
+
+  .real-estate-cta-trust {
+    font-size: 8px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cta-eyebrow-dot {
+    animation: none;
+  }
+
+
+  .real-estate-cta-primary,
+  .real-estate-cta-secondary,
+  .cta-arrow {
+    transition: none;
+  }
+
+}

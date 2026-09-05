@@ -1,0 +1,1764 @@
+/* =========================================================
+   GRADLEAD — EDUCATION AI SCORING
+   Premium responsive AI intelligence section
+========================================================= */
+
+.education-ai-scoring-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  padding: 120px 0;
+
+  background:
+    radial-gradient(
+      circle at 78% 48%,
+      rgba(112, 195, 144, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfdfc 100%
+    );
+
+  color: #1c2143;
+}
+
+
+/* =========================================================
+   SOFT BACKGROUND ORBS
+========================================================= */
+
+.education-ai-scoring-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  top: 5%;
+  right: -180px;
+
+  border-radius: 50%;
+
+  background: rgba(112, 195, 144, 0.07);
+
+  filter: blur(80px);
+
+  pointer-events: none;
+}
+
+.education-ai-scoring-section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  bottom: -120px;
+  left: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(112, 195, 144, 0.05);
+
+  filter: blur(70px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.education-ai-scoring-container {
+  position: relative;
+  z-index: 2;
+
+  width: min(1240px, 92%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.9fr)
+    minmax(0, 1.1fr);
+
+  align-items: center;
+
+  gap: 80px;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.education-ai-scoring-content {
+  width: 100%;
+
+  max-width: 560px;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.education-ai-scoring-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 23px;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(112, 195, 144, 0.28);
+
+  border-radius: 999px;
+
+  background: rgba(112, 195, 144, 0.06);
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  white-space: nowrap;
+}
+
+
+.education-ai-scoring-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 5px rgba(112, 195, 144, 0.10),
+    0 0 16px rgba(112, 195, 144, 0.45);
+
+  animation:
+    scoringDotPulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes scoringDotPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.education-ai-scoring-content h2 {
+  margin: 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: clamp(42px, 4.5vw, 64px);
+
+  line-height: 1.05;
+
+  letter-spacing: -3px;
+
+  font-weight: 800;
+}
+
+
+.education-ai-scoring-content h2 span {
+  color: #70c390;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.education-ai-scoring-description {
+  max-width: 530px;
+
+  margin: 25px 0 0;
+
+  color: #667085;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   POINTS
+========================================================= */
+
+.education-ai-scoring-points {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  margin-top: 31px;
+}
+
+
+.education-ai-scoring-point {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 13px;
+
+  width: fit-content;
+
+  animation:
+    scoringPointFloat
+    5s
+    ease-in-out
+    infinite;
+}
+
+
+.education-ai-scoring-point:nth-child(2) {
+  animation-delay: -1.7s;
+}
+
+
+.education-ai-scoring-point:nth-child(3) {
+  animation-delay: -3.4s;
+}
+
+
+@keyframes scoringPointFloat {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+
+/* =========================================================
+   CHECK
+========================================================= */
+
+.education-ai-scoring-point > span {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 1px;
+
+  border-radius: 8px;
+
+  background: #eaf8ef;
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  box-shadow:
+    0 7px 18px rgba(112, 195, 144, 0.12);
+}
+
+
+.education-ai-scoring-point strong {
+  display: block;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+
+.education-ai-scoring-point p {
+  margin: 4px 0 0;
+
+  color: #7a8494;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.education-ai-scoring-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-top: 29px;
+
+  color: #718096;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+.status-pulse {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 13px rgba(112, 195, 144, 0.50);
+
+  animation:
+    statusPulse
+    1.7s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   RIGHT VISUAL
+========================================================= */
+
+.education-ai-scoring-visual {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+.education-ai-scoring-glow {
+  position: absolute;
+
+  width: 78%;
+  height: 78%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(112, 195, 144, 0.22),
+      rgba(112, 195, 144, 0.05) 45%,
+      transparent 72%
+    );
+
+  filter: blur(35px);
+
+  animation:
+    scoringGlow
+    6s
+    ease-in-out
+    infinite;
+
+  pointer-events: none;
+}
+
+
+@keyframes scoringGlow {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.ai-scoring-dashboard {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  max-width: 620px;
+
+  box-sizing: border-box;
+
+  padding: 25px;
+
+  border:
+    1px solid
+    rgba(112, 195, 144, 0.20);
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 252, 249, 0.96)
+    );
+
+  box-shadow:
+    0 35px 90px rgba(28, 33, 67, 0.13),
+    0 12px 35px rgba(112, 195, 144, 0.10);
+
+  backdrop-filter: blur(18px);
+
+  animation:
+    dashboardFloat
+    6s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes dashboardFloat {
+  0%,
+  100% {
+    transform: translateY(5px);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+========================================================= */
+
+.ai-dashboard-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-bottom: 20px;
+
+  border-bottom:
+    1px solid
+    rgba(28, 33, 67, 0.07);
+}
+
+
+.dashboard-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.dashboard-ai-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #70c390,
+      #9edcaf
+    );
+
+  color: white;
+
+  font-size: 18px;
+
+  box-shadow:
+    0 8px 22px
+    rgba(112, 195, 144, 0.25);
+}
+
+
+.dashboard-title strong {
+  display: block;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+
+.dashboard-title small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8992a1;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   LIVE
+========================================================= */
+
+.dashboard-live {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #edf9f1;
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.dashboard-live i {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 8px
+    rgba(112, 195, 144, 0.65);
+
+  animation:
+    livePulse
+    1.5s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes livePulse {
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+
+
+.ai-score-area {
+  display: grid;
+
+  grid-template-columns:
+    175px
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 32px;
+
+  padding: 27px 0;
+}
+
+
+
+.score-ring {
+  position: relative;
+
+  width: 165px;
+  height: 165px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      #70c390 0deg,
+      #70c390 331deg,
+      #e8f1eb 331deg,
+      #e8f1eb 360deg
+    );
+
+  box-shadow:
+    0 12px 30px
+    rgba(112, 195, 144, 0.15);
+
+  animation:
+    scoreRingPulse
+    4s
+    ease-in-out
+    infinite;
+}
+
+
+.score-ring::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 9px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+}
+
+
+.score-ring::after {
+  content: "";
+
+  position: absolute;
+
+  width: 10px;
+  height: 10px;
+
+  top: 9px;
+  right: 28px;
+
+  border-radius: 50%;
+
+  background: #70c390;
+
+  box-shadow:
+    0 0 0 5px rgba(112, 195, 144, 0.12),
+    0 0 15px rgba(112, 195, 144, 0.45);
+
+  animation:
+    ringDot
+    3s
+    linear
+    infinite;
+}
+
+
+@keyframes scoreRingPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+
+@keyframes ringDot {
+  from {
+    transform: rotate(0deg) translateX(1px);
+  }
+
+  to {
+    transform: rotate(360deg) translateX(1px);
+  }
+}
+
+
+.score-ring-inner {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+
+.score-ring-inner span {
+  color: #8a94a3;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+.score-ring-inner strong {
+  margin-top: 2px;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 42px;
+
+  line-height: 1;
+
+  font-weight: 800;
+}
+
+
+.score-ring-inner small {
+  margin-top: 7px;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background: #edf9f1;
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   SCORE INFO
+========================================================= */
+
+.score-info {
+  min-width: 0;
+}
+
+
+.score-label {
+  display: block;
+
+  color: #8a94a3;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+.score-info h3 {
+  margin: 7px 0 0;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 20px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+}
+
+
+.score-info p {
+  max-width: 280px;
+
+  margin: 8px 0 18px;
+
+  color: #7a8494;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.score-progress {
+  position: relative;
+
+  width: 100%;
+  height: 7px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #edf2ef;
+}
+
+
+.score-progress span {
+  display: block;
+
+  width: 94%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #70c390,
+      #9edcaf
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(112, 195, 144, 0.30);
+
+  animation:
+    progressGrow
+    2s
+    ease-out;
+}
+
+
+@keyframes progressGrow {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 94%;
+  }
+}
+
+
+.score-progress-labels {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 7px;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+}
+
+
+.score-progress-labels span {
+  color: #8a94a3;
+}
+
+
+.score-progress-labels strong {
+  color: #39885a;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   SIGNAL LIST
+========================================================= */
+
+.ai-signal-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid
+    rgba(28, 33, 67, 0.07);
+}
+
+
+.ai-signal-item {
+  display: grid;
+
+  grid-template-columns:
+    34px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-height: 47px;
+
+  padding: 8px 10px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(28, 33, 67, 0.055);
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+.ai-signal-item:hover {
+  transform: translateX(4px);
+
+  border-color:
+    rgba(112, 195, 144, 0.20);
+
+  box-shadow:
+    0 10px 24px
+    rgba(28, 33, 67, 0.06);
+}
+
+
+.signal-small-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #edf9f1;
+
+  color: #39885a;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+.signal-small-content {
+  min-width: 0;
+}
+
+
+.signal-small-content strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #29304c;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.signal-small-content span {
+  display: block;
+
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  color: #8a94a3;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.ai-signal-item > b {
+  color: #39885a;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+}
+
+
+
+
+.ai-recommendation {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-top: 17px;
+
+  padding: 14px;
+
+  border:
+    1px solid
+    rgba(112, 195, 144, 0.22);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(112, 195, 144, 0.09),
+      rgba(255, 255, 255, 0.95)
+    );
+
+  box-shadow:
+    0 12px 28px
+    rgba(112, 195, 144, 0.08);
+
+  animation:
+    recommendationFloat
+    4.5s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes recommendationFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+
+.recommendation-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #70c390;
+
+  color: white;
+
+  font-size: 15px;
+
+  box-shadow:
+    0 8px 18px
+    rgba(112, 195, 144, 0.25);
+}
+
+
+.ai-recommendation span {
+  display: block;
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.ai-recommendation strong {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #1c2143;
+
+  font-family:
+    "Plus Jakarta Sans",
+    "Inter",
+    sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.ai-recommendation p {
+  margin: 3px 0 0;
+
+  color: #7a8494;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+}
+
+
+.recommendation-arrow {
+  color: #39885a;
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  animation:
+    arrowMove
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes arrowMove {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+
+
+
+.floating-ai-badge {
+  position: absolute;
+
+  top: -16px;
+  right: -14px;
+
+  z-index: 5;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 8px 11px;
+
+  border:
+    1px solid
+    rgba(112, 195, 144, 0.25);
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  color: #39885a;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 12px 30px
+    rgba(28, 33, 67, 0.12);
+
+  animation:
+    badgeFloat
+    4s
+    ease-in-out
+    infinite;
+}
+
+
+.floating-ai-badge span {
+  width: 17px;
+  height: 17px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eaf8ef;
+
+  color: #39885a;
+
+  font-size: 9px;
+}
+
+
+@keyframes badgeFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+
+
+@media screen and (max-width: 1150px) {
+
+  .education-ai-scoring-container {
+    gap: 55px;
+  }
+
+  .education-ai-scoring-content h2 {
+    font-size: clamp(40px, 5vw, 58px);
+  }
+
+  .ai-scoring-dashboard {
+    padding: 22px;
+  }
+}
+
+
+
+
+@media screen and (max-width: 1050px) {
+
+  .education-ai-scoring-section {
+    padding: 100px 0;
+  }
+
+  .education-ai-scoring-container {
+    grid-template-columns: 1fr;
+
+    gap: 60px;
+  }
+
+  .education-ai-scoring-content {
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    text-align: center;
+  }
+
+  .education-ai-scoring-eyebrow {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .education-ai-scoring-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .education-ai-scoring-points {
+    max-width: 560px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: left;
+  }
+
+  .education-ai-scoring-status {
+    justify-content: center;
+  }
+
+  .education-ai-scoring-visual {
+    width: min(700px, 100%);
+
+    margin: 0 auto;
+  }
+
+  .ai-scoring-dashboard {
+    max-width: 700px;
+  }
+}
+
+
+
+
+@media screen and (max-width: 700px) {
+
+  .education-ai-scoring-section {
+    padding: 78px 0;
+  }
+
+  .education-ai-scoring-container {
+    width: 92%;
+
+    gap: 45px;
+  }
+
+  .education-ai-scoring-eyebrow {
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    padding: 7px 11px;
+  }
+
+  .education-ai-scoring-content h2 {
+    font-size: clamp(34px, 9vw, 48px);
+
+    letter-spacing: -1.8px;
+  }
+
+  .education-ai-scoring-description {
+    font-size: 13px;
+
+    line-height: 1.65;
+  }
+
+  .education-ai-scoring-points {
+    margin-top: 27px;
+
+    gap: 12px;
+  }
+
+  .education-ai-scoring-point {
+    width: 100%;
+
+    gap: 10px;
+  }
+
+  .education-ai-scoring-point > span {
+    width: 25px;
+    height: 25px;
+
+    border-radius: 7px;
+  }
+
+  .education-ai-scoring-point strong {
+    font-size: 12px;
+  }
+
+  .education-ai-scoring-point p {
+    font-size: 9px;
+  }
+
+  .education-ai-scoring-status {
+    margin-top: 24px;
+
+    font-size: 9px;
+  }
+
+
+  /* DASHBOARD */
+
+  .ai-scoring-dashboard {
+    width: 100%;
+
+    padding: 17px;
+
+    border-radius: 19px;
+  }
+
+  .ai-dashboard-header {
+    padding-bottom: 15px;
+  }
+
+  .dashboard-ai-icon {
+    width: 33px;
+    height: 33px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+  }
+
+  .dashboard-title strong {
+    font-size: 12px;
+  }
+
+  .dashboard-title small {
+    font-size: 8px;
+  }
+
+  .dashboard-live {
+    padding: 5px 8px;
+
+    font-size: 7px;
+  }
+
+
+  /* SCORE */
+
+  .ai-score-area {
+    grid-template-columns: 135px minmax(0, 1fr);
+
+    gap: 20px;
+
+    padding: 22px 0;
+  }
+
+  .score-ring {
+    width: 135px;
+    height: 135px;
+  }
+
+  .score-ring-inner strong {
+    font-size: 34px;
+  }
+
+  .score-info h3 {
+    font-size: 16px;
+  }
+
+  .score-info p {
+    font-size: 9px;
+
+    margin-bottom: 14px;
+  }
+
+
+  /* SIGNALS */
+
+  .ai-signal-item {
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+
+    min-height: 43px;
+
+    padding: 7px 8px;
+  }
+
+  .signal-small-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+  }
+
+
+  /* RECOMMENDATION */
+
+  .ai-recommendation {
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+
+    padding: 11px;
+
+    gap: 9px;
+  }
+
+  .recommendation-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .floating-ai-badge {
+    top: -11px;
+    right: -7px;
+  }
+}
+
+
+
+
+@media screen and (max-width: 480px) {
+
+  .education-ai-scoring-section {
+    padding: 68px 0;
+  }
+
+  .education-ai-scoring-container {
+    gap: 38px;
+  }
+
+  .education-ai-scoring-content h2 {
+    font-size: 33px;
+
+    letter-spacing: -1.5px;
+  }
+
+  .education-ai-scoring-description {
+    font-size: 12px;
+  }
+
+  .education-ai-scoring-point strong {
+    font-size: 11px;
+  }
+
+  .education-ai-scoring-point p {
+    font-size: 8px;
+  }
+
+  .education-ai-scoring-status {
+    font-size: 8px;
+  }
+
+
+  .ai-scoring-dashboard {
+    padding: 13px;
+
+    border-radius: 16px;
+  }
+
+  .ai-score-area {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+
+    text-align: center;
+  }
+
+  .score-ring {
+    width: 125px;
+    height: 125px;
+  }
+
+  .score-info p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .score-progress-labels {
+    text-align: left;
+  }
+
+  .ai-signal-item {
+    grid-template-columns: 29px minmax(0, 1fr) auto;
+  }
+
+  .signal-small-content strong {
+    font-size: 9px;
+  }
+
+  .signal-small-content span {
+    font-size: 7px;
+  }
+
+  .ai-signal-item > b {
+    font-size: 8px;
+  }
+
+  .ai-recommendation strong {
+    font-size: 10px;
+  }
+
+  .ai-recommendation p {
+    font-size: 7px;
+  }
+}
+
+
+
+
+@media screen and (max-width: 360px) {
+
+  .education-ai-scoring-content h2 {
+    font-size: 30px;
+  }
+
+  .education-ai-scoring-description {
+    font-size: 11px;
+  }
+
+  .education-ai-scoring-point strong {
+    font-size: 10px;
+  }
+
+  .education-ai-scoring-point p {
+    font-size: 7px;
+  }
+
+  .ai-scoring-dashboard {
+    padding: 11px;
+  }
+
+  .dashboard-title strong {
+    font-size: 10px;
+  }
+
+  .dashboard-title small {
+    font-size: 7px;
+  }
+
+  .dashboard-live {
+    font-size: 6px;
+  }
+
+  .ai-signal-item {
+    gap: 7px;
+  }
+}
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .education-ai-scoring-dot,
+  .education-ai-scoring-point,
+  .status-pulse,
+  .education-ai-scoring-glow,
+  .ai-scoring-dashboard,
+  .dashboard-live i,
+  .score-ring,
+  .score-ring::after,
+  .score-progress span,
+  .ai-recommendation,
+  .recommendation-arrow,
+  .floating-ai-badge {
+    animation: none !important;
+  }
+}
