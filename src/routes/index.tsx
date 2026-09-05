@@ -66,7 +66,7 @@ function Landing() {
             <span className="h-2.5 w-2.5 rounded-full bg-destructive/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
-            <span className="ml-3 text-xs text-muted-foreground">gradleadai.app / dashboard</span>
+            <span className="ml-3 text-xs text-muted-foreground">www.gradleadai.com / dashboard</span>
           </div>
           <div className="grid grid-cols-12 ring-grid">
             <aside className="col-span-3 hidden border-r border-border bg-sidebar p-4 md:block">
