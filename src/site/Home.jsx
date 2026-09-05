@@ -1,3 +1,5 @@
+import Navbar from "./components/Navbar.jsx";
+import ScrollToHash from "./ScrollToHash.jsx";
 import Hero from "./components/Hero.jsx";
 import Feature from "./components/Features.jsx";
 import ProductShowcase from "./components/ProductShowcase.jsx";
@@ -12,6 +14,8 @@ import Footer from "./components/Footer.jsx";
 function Home() {
   return (
     <>
+      <ScrollToHash />
+      <Navbar />
       <Hero />
       <Feature />
       <ProductShowcase />

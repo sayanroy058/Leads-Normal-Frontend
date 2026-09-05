@@ -2,6 +2,7 @@ import "./Blogs.css";
 import { Link } from "@/site/router";
 
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 import automationImage from "../assets/features/blog-automation.png";
 import qualificationImage from "../assets/features/blog-qualification.png";
@@ -106,6 +107,8 @@ const blogs = [
 export default function AllBlogs() {
   return (
     <>
+
+      <Navbar />
 
       <section className="blogs all-blogs-page">
         <div className="blogs-container">

@@ -11,6 +11,7 @@ import fastResponseImage from "../assets/features/blog-fast-lead-response.png";
 import pipelineAnalyticsImage from "../assets/features/blog-pipeline-analytics.png";
 
 import Footer from "./Footer.jsx";
+import Navbar from "./Navbar.jsx";
 
 const blogs = [
   {
@@ -98,6 +99,7 @@ const blogs = [
 export default function BlogsPage() {
   return (
      <>
+    <Navbar />
     <section className="all-blogs-page">
       <div className="all-blogs-container">
         <div className="all-blogs-heading">

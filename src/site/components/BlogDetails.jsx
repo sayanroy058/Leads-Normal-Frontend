@@ -1,5 +1,6 @@
 import "./BlogDetails.css";
 import { useParams, Link } from "@/site/router";
+import Navbar from "./Navbar.jsx";
 import Footer from "./Footer.jsx";
 
 import automationImage from "../assets/features/blog-automation.png";
@@ -359,6 +360,8 @@ export default function BlogDetails() {
     return (
       <>
 
+        <Navbar />
+
         <main className="blog-details">
           <div className="blog-not-found">
             <h1>Blog Not Found</h1>
@@ -384,6 +387,8 @@ export default function BlogDetails() {
 
   return (
     <>
+
+      <Navbar />
 
       <main className="blog-details">
 

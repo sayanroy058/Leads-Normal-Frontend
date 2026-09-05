@@ -1,3 +1,5 @@
+import Navbar from "./Navbar";
+import ScrollToHash from "../ScrollToHash.jsx";
 import EducationHero from "./EducationHero";
 import EducationLeadProblems from "./EducationLeadProblems.jsx";
 import EducationAIRadar from "./EducationAIRadar.jsx";
@@ -11,6 +13,12 @@ import Footer from "./Footer";
 export default function Education() {
   return (
     <>
+      {/* =========================
+          GLOBAL NAVBAR + SCROLL
+      ========================= */}
+      <ScrollToHash />
+      <Navbar />
+
       {/* =========================
           EDUCATION HERO
       ========================= */}

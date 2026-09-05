@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Pricing.css";
+import Navbar from "./Navbar.jsx";
 import Footer from "./Footer.jsx";
 
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
@@ -87,6 +88,7 @@ export default function Pricing() {
 
   return (
     <>
+      <Navbar />
       <main className="pricing-page">
 
       

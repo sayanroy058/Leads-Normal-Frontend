@@ -1,3 +1,5 @@
+import Navbar from "./Navbar";
+import ScrollToHash from "../ScrollToHash.jsx";
 import RealEstateHero from "./RealEstatehero.jsx";
 import RealEstateIntelligence from "./RealEstateIntelligence.jsx";
 import RealEstateQualification from "./RealEstateQualification.jsx";
@@ -11,6 +13,9 @@ import Footer from "./Footer";
 export default function RealEstate() {
   return (
     <main className="real-estate-page">
+
+      <ScrollToHash />
+      <Navbar />
 
       <RealEstateHero />
 
