@@ -5,12 +5,19 @@
 import {
   Link as TanStackLink,
   useLocation,
-  useParams,
+  useParams as useTanStackParams,
   useNavigate,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
-export { useLocation, useParams, useNavigate };
+export { useLocation, useNavigate };
+
+// react-router's useParams() takes no arguments and returns the params of the
+// nearest matched route. TanStack v1's hook requires an options object, so we
+// wrap it with `strict: false` to read the nearest match's params.
+export function useParams() {
+  return useTanStackParams({ strict: false });
+}
 
 // <Link> from react-router-dom accepts `to`, `className`, children, onClick, etc.
 // TanStack's Link accepts `to` too, so most usages just work. We special-case the

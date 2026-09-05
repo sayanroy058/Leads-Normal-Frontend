@@ -183,7 +183,7 @@ const blogs = [
   },
 
   {
-    slug: "how-to-prioritize-high-intent-leads",
+    slug: "how-to-identify-high-intent-buyers",
     category: "SMARTER LEAD PRIORITIZATION",
     title: "How to Prioritize High-Intent Leads Before Your Competitors",
     intro:
@@ -225,7 +225,7 @@ const blogs = [
   },
 
   {
-    slug: "sales-automation-for-modern-teams",
+    slug: "sales-automation-without-losing-personalization",
     category: "AUTOMATE THE RIGHT WORK",
     title: "How Sales Automation Helps Modern Teams Move Faster",
     intro:
@@ -267,7 +267,7 @@ const blogs = [
   },
 
   {
-    slug: "reduce-lead-response-time",
+    slug: "why-fast-lead-response-wins-more-deals",
     category: "FASTER FOLLOW-UP",
     title: "Why Faster Lead Response Creates Better Conversion Opportunities",
     intro:
@@ -309,7 +309,7 @@ const blogs = [
   },
 
   {
-    slug: "sales-pipeline-analytics",
+    slug: "how-pipeline-analytics-improve-revenue",
     category: "PIPELINE INTELLIGENCE",
     title: "How Better Sales Analytics Improve Revenue Decisions",
     intro:
