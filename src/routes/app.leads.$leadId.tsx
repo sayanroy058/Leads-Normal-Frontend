@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   ArrowLeft, Save, Trash2, Loader2, Sparkles, Mail, Phone,
-  Building2, MapPin, Tag, FileText, DollarSign, AlertTriangle, Home,
+  Building2, MapPin, Tag, FileText, DollarSign, AlertTriangle,
   MessageCircle, PhoneCall, MessagesSquare, Clock,
 } from "lucide-react";
 import { toast } from "sonner";
