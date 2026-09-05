@@ -8,10 +8,10 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in to Leads Normal" },
-      { name: "description", content: "Log in to Leads Normal to upload leads and run AI email, WhatsApp and calling campaigns." },
-      { property: "og:title", content: "Sign in to Leads Normal" },
-      { property: "og:description", content: "Log in or create a Leads Normal account to manage your leads with AI." },
+      { title: "Sign in to GradLeadAI" },
+      { name: "description", content: "Log in to GradLeadAI to upload leads and run AI email, WhatsApp and calling campaigns." },
+      { property: "og:title", content: "Sign in to GradLeadAI" },
+      { property: "og:description", content: "Log in or create a GradLeadAI account to manage your leads with AI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -60,7 +60,7 @@ function AuthPage() {
           <div className="grid h-9 w-9 place-items-center rounded-xl gradient-brand shadow-glow">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
-          <span className="text-lg font-semibold tracking-tight">Leads Normal</span>
+          <span className="text-lg font-semibold tracking-tight">GradLeadAI</span>
         </Link>
         <div>
           <h2 className="max-w-md text-4xl font-bold tracking-tight">
@@ -70,12 +70,12 @@ function AuthPage() {
             Upload CSV or Excel lead lists, chat with your data, and let AI handle email, WhatsApp and calls.
           </p>
         </div>
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Leads Normal</p>
+        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} GradLeadAI</p>
       </div>
 
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-soft">
-          <h1 className="text-2xl font-semibold tracking-tight">Sign in to Leads Normal</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Sign in to GradLeadAI</h1>
           <p className="mt-1 text-sm text-muted-foreground">Welcome back — pick up where you left off.</p>
 
           <form onSubmit={onSubmit} className="mt-6 space-y-4">

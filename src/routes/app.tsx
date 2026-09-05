@@ -13,7 +13,7 @@ import { initials, parseServerDate } from "@/components/shared";
 const SIDEBAR_KEY = "sidebar_collapsed";
 
 export const Route = createFileRoute("/app")({
-  head: () => ({ meta: [{ title: "Dashboard — Leads Normal" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — GradLeadAI" }] }),
   component: AppLayout,
 });
 
@@ -126,7 +126,7 @@ function AppLayout() {
           <Sparkles className="h-4 w-4 text-white" />
         </div>
         <div className={cn("min-w-0", collapsed && "lg:hidden")}>
-          <div className="truncate text-sm font-semibold leading-none">Leads Normal</div>
+          <div className="truncate text-sm font-semibold leading-none">GradLeadAI</div>
           <div className="mt-0.5 truncate text-[10px] uppercase tracking-wider text-muted-foreground">Workspace · {user?.name ?? "User"}</div>
         </div>
         <button

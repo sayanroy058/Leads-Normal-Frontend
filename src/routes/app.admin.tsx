@@ -11,7 +11,7 @@ import {
 } from "@/components/shared";
 
 export const Route = createFileRoute("/app/admin")({
-  head: () => ({ meta: [{ title: "Admin — Leads Normal" }] }),
+  head: () => ({ meta: [{ title: "Admin — GradLeadAI" }] }),
   component: AdminPage,
 });
 

@@ -42,7 +42,7 @@ const swatches = [
 ];
 
 function fileBase(id: string) {
-  return `leadsnormal-${id}-${Date.now()}`;
+  return `gradleadai-${id}-${Date.now()}`;
 }
 
 async function downloadImage(url: string, filename: string) {
@@ -439,7 +439,7 @@ function Composer({
                   <img src={post.image} alt={post.imagePrompt} className="h-full w-full object-cover" />
                 </div>
                 <button
-                  onClick={() => downloadImage(post.image, `leadsnormal-post-${Date.now()}.png`)}
+                  onClick={() => downloadImage(post.image, `gradleadai-post-${Date.now()}.png`)}
                   className={`${btnPrimary} mt-3 w-full`}
                 >
                   <Download className="h-4 w-4" /> Download image
