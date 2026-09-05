@@ -1,6 +1,9 @@
 // Defaults to the deployed backend on Vercel. Override per environment with
 // VITE_API_URL (e.g. "/api" in dev to go through the Vite proxy to localhost:3001).
-const API_BASE: string = import.meta.env.VITE_API_URL ?? "https://leads-normal-backend.vercel.app/api";
+// An EMPTY VITE_API_URL is treated as unset so it falls back to the real backend
+// instead of accidentally issuing same-origin requests against the frontend host.
+const RAW_API: string = import.meta.env.VITE_API_URL ?? "";
+const API_BASE: string = RAW_API.trim().length > 0 ? RAW_API : "https://leads-normal-backend.vercel.app/api";
 
 function getToken(): string | null {
   try { return localStorage.getItem("auth_token"); } catch { return null; }
