@@ -1,6 +1,6 @@
 import "./RealEstateConversion.css";
 
-import conversionImage from "../assets/features/conversion.png";
+import conversionImage from "../assets/features/Conversion.png";
 
 export default function RealEstateConversion() {
   return (
