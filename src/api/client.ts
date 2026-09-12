@@ -3,7 +3,7 @@
 // An EMPTY VITE_API_URL is treated as unset so it falls back to the real backend
 // instead of accidentally issuing same-origin requests against the frontend host.
 const RAW_API: string = import.meta.env.VITE_API_URL ?? "";
-const API_BASE: string = RAW_API.trim().length > 0 ? RAW_API : "https://leads-normal-backend.vercel.app/api";
+const API_BASE: string = RAW_API.trim().length > 0 ? RAW_API : "https://leads-normal-backend-two.vercel.app/api";
 
 function getToken(): string | null {
   try { return localStorage.getItem("auth_token"); } catch { return null; }
