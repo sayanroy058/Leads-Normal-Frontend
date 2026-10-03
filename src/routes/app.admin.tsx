@@ -224,10 +224,9 @@ function CreateUserModal({ onClose, onCreated }: { onClose: () => void; onCreate
       toast.error("Check your details", { description: "Enter a valid email and a password of at least 6 characters." });
       return;
     }
-    const hasGmail = !!(gmailEmail.trim() && gmailAppPassword.trim());
     setBusy(true);
     try {
-      const created = await api.createAdminUser({
+      await api.createAdminUser({
         name: name.trim() || undefined,
         email: email.trim(),
         password,
@@ -235,13 +234,7 @@ function CreateUserModal({ onClose, onCreated }: { onClose: () => void; onCreate
         gmail_email: gmailEmail.trim() || undefined,
         gmail_app_password: gmailAppPassword.trim() || undefined,
       });
-      if (hasGmail && created.first_sync) {
-        toast.success("User created", { description: `Synced ${created.first_sync.synced} of ${created.first_sync.total} emails from their inbox.` });
-      } else if (hasGmail) {
-        toast.success("User created", { description: "First inbox sync failed — they can retry from Email Studio." });
-      } else {
-        toast.success("User created");
-      }
+      toast.success("User created");
       onCreated();
       onClose();
     } catch (err) {
@@ -309,17 +302,11 @@ function EmailCredentialsModal({ user, onClose, onSaved }: { user: AdminUser; on
     const appPassword = gmailAppPassword.trim();
     setBusy(true);
     try {
-      const res = await api.setAdminUserEmailCredentials(user.id, {
+      await api.setAdminUserEmailCredentials(user.id, {
         gmail_email: gmailEmail.trim() || undefined,
         gmail_app_password: appPassword || undefined,
       });
-      if (appPassword && res.first_sync) {
-        toast.success("Email settings saved", { description: `Synced ${res.first_sync.synced} of ${res.first_sync.total} emails from their inbox.` });
-      } else if (appPassword) {
-        toast.success("Email settings saved", { description: "First inbox sync failed — they can retry from Email Studio." });
-      } else {
-        toast.success("Email settings saved");
-      }
+      toast.success("Email settings saved");
       onSaved();
       onClose();
     } catch (err) {

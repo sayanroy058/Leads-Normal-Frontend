@@ -57,7 +57,7 @@ export const api = {
   // Admin — user access management
   getAdminUsers: () => request<AdminUser[]>("GET", "/admin/users"),
   createAdminUser: (data: { name?: string; email: string; password: string; is_admin?: boolean; gmail_email?: string; gmail_app_password?: string }) =>
-    request<AdminUser & { first_sync: { synced: number; total: number } | null }>("POST", "/admin/users", data),
+    request<AdminUser>("POST", "/admin/users", data),
   deleteAdminUser: (id: number) => request<{ success: boolean }>("DELETE", `/admin/users/${id}`),
   disableAdminUser: (id: number) => request<{ success: boolean }>("POST", `/admin/users/${id}/disable`),
   enableAdminUser: (id: number) => request<{ success: boolean }>("POST", `/admin/users/${id}/enable`),
@@ -65,11 +65,10 @@ export const api = {
     request<{ success: boolean }>("POST", `/admin/users/${id}/reset-password`, { password }),
   generateAdminUserPassword: (id: number) =>
     request<{ success: boolean; password: string }>("POST", `/admin/users/${id}/generate-password`),
-  // Setting a Gmail app password triggers an immediate first sync on the
-  // backend (awaited there, so this call can take several seconds — show a
-  // spinner/wait state in the UI rather than treating it as instant).
+  // Saving a user's Gmail app password only stores the credentials — no mail
+  // is synced (the inbox/received-mail feature was removed).
   setAdminUserEmailCredentials: (id: number, data: { gmail_email?: string; gmail_app_password?: string }) =>
-    request<{ success: boolean; first_sync?: { synced: number; total: number } | null }>("POST", `/admin/users/${id}/email-credentials`, data),
+    request<{ success: boolean }>("POST", `/admin/users/${id}/email-credentials`, data),
 
   // Leads
   getLeads: () => request<any[]>("GET", "/leads"),
@@ -91,7 +90,6 @@ export const api = {
   insertEmails: (data: any[]) => request<{ success: boolean; items: { id: string; lead_id: string }[] }>("POST", "/messages/emails", data),
   updateEmailStatus: (data: { id: string; status: string; sent_at?: string; delivered_at?: string; opened_at?: string }) => request("POST", "/messages/emails/status", data),
   sendEmail: (id: string) => request<any>("POST", "/messages/emails/send", { id }),
-  syncInbox: () => request<{ synced: number; total: number }>("POST", "/messages/emails/sync"),
 
   // WhatsApp
   getWhatsapps: () => request<any[]>("GET", "/messages/whatsapps"),
