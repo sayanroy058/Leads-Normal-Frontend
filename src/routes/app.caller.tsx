@@ -3,21 +3,14 @@ import { useEffect, useMemo, useState } from "react";
 import { PhoneCall, Plus, X, Loader2, Sparkles, Play, CalendarPlus, CheckCircle2, Mic, FileText, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/api/client";
-import { useLeads, updateLeadStatus, type Lead } from "@/lib/leads-client";
-import { PageHeader, LaneShell, Pill, Avatar, timeAgo, btnPrimary, inputCls, EmptyState, ComingSoon } from "@/components/shared";
+import { useLeads, type Lead } from "@/lib/leads-client";
+import { PageHeader, LaneShell, Pill, Avatar, timeAgo, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
 
 export const Route = createFileRoute("/app/caller")({
-  // Voice Agent isn't enabled yet — show a placeholder instead of the
-  // working studio until this channel is turned on.
-  component: () => <ComingSoon icon={PhoneCall} title="Voice Agent — coming soon" />,
+  component: VoiceAgent,
 });
 
 const goals = ["Qualify prospect", "Book a meeting", "Discuss a proposal", "Re-engage"];
-const voices = [
-  { id: "aria", label: "Aria · warm female" },
-  { id: "ryan", label: "Ryan · confident male" },
-  { id: "nova", label: "Nova · friendly neutral" },
-];
 
 interface Call {
   id: string;
@@ -70,16 +63,19 @@ function VoiceAgent() {
       <PageHeader
         title="AI Voice Agent"
         badge={
-          <Pill className="border border-warning/40 bg-warning/15 text-warning-foreground" >
-            <Sparkles className="h-3 w-3" /> Demo mode
+          <Pill className="border border-success/40 bg-success/15 text-success-foreground">
+            <Sparkles className="h-3 w-3" /> Live
           </Pill>
         }
-        description={`Qualify prospects, book meetings and follow up on proposals with an AI agent. ${withPhone} of ${leads.length} leads have a phone number.`}
+        description={`Pick a lead and the AI agent calls them to discuss their own requirements. ${withPhone} of ${leads.length} leads have a phone number.`}
       >
         <button onClick={() => setComposing(true)} className={btnPrimary}>
-          <Plus className="h-4 w-4" /> Queue new call
+          <Plus className="h-4 w-4" /> Bulk call
         </button>
       </PageHeader>
+
+      {/* Primary action: see each lead's details and call them. */}
+      <CallBoard leads={leads} goal={goals[0]} onDialed={refresh} />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {lanes.map(({ key, label, tint, Icon }) => (
@@ -142,7 +138,6 @@ function VoiceAgent() {
 function Composer({ leads, onClose, onDone }: { leads: Lead[]; onClose: () => void; onDone: () => void }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [goal, setGoal] = useState(goals[0]);
-  const [voice, setVoice] = useState(voices[0].id);
   const [busy, setBusy] = useState(false);
   const [search, setSearch] = useState("");
   const eligible = leads.filter((l) => l.phone);
@@ -155,20 +150,13 @@ function Composer({ leads, onClose, onDone }: { leads: Lead[]; onClose: () => vo
     setBusy(true);
     try {
       const targets = leads.filter((l) => selected.has(l.id));
-      const queued = targets.map((lead) => ({ lead_id: lead.id, goal, voice, status: "queued" }));
-      const inserted = (await api.insertCallLogs(queued)).map((c) => ({
-        ...c,
-        transcript: c.transcript ? (JSON.parse(c.transcript) as { speaker: string; text: string }[]) : [],
-      })) as Call[];
-      toast.success(`${targets.length} call${targets.length === 1 ? "" : "s"} queued`);
-      onDone();
-      for (const lead of targets) {
-        const call = inserted.find((c) => c.lead_id === lead.id);
-        if (!call) continue;
-        runCall(call.id, lead, goal, voice);
+      // Dial each lead for real via the Plivo AI agent, using their own details.
+      const results = await Promise.all(targets.map((lead) => runCall(lead, goal)));
+      const ok = results.filter(Boolean).length;
+      if (ok) {
+        toast.success(`${ok} call${ok === 1 ? "" : "s"} placed`);
+        onDone();
       }
-    } catch (e) {
-      toast.error("Failed", { description: (e as Error).message });
     } finally { setBusy(false); }
   }
 
@@ -204,20 +192,9 @@ function Composer({ leads, onClose, onDone }: { leads: Lead[]; onClose: () => vo
                 ))}
               </div>
             </div>
-            <div>
-              <div className="text-xs font-medium text-muted-foreground">Agent voice</div>
-              <div className="mt-1 space-y-1">
-                {voices.map((v) => (
-                  <label key={v.id} className="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-xs transition hover:bg-muted/50">
-                    <input type="radio" name="voice" checked={voice === v.id} onChange={() => setVoice(v.id)} className="accent-primary" />
-                    <Mic className="h-3.5 w-3.5 text-muted-foreground" /> {v.label}
-                  </label>
-                ))}
-              </div>
-            </div>
             <div className="rounded-xl border border-border bg-background p-3 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5 font-medium text-foreground"><Sparkles className="h-3.5 w-3.5" /> Auto-recorded &amp; summarized</div>
-              <p className="mt-1">Each call gets a transcript, summary, lead status update, and an appointment if the lead agrees.</p>
+              <div className="flex items-center gap-1.5 font-medium text-foreground"><Sparkles className="h-3.5 w-3.5" /> Speaks each lead&apos;s own details</div>
+              <p className="mt-1">Every call is briefed with that lead&apos;s requirement, budget, notes and urgency. Transcript and summary are saved to the call log.</p>
             </div>
           </div>
         </div>
@@ -231,28 +208,153 @@ function Composer({ leads, onClose, onDone }: { leads: Lead[]; onClose: () => vo
   );
 }
 
-async function runCall(callId: string, lead: Lead, goal: string, _voice: string) {
-  await api.updateCallLog({ id: callId, status: "in_progress", started_at: new Date().toISOString() });
+/**
+ * Place a REAL outbound call to this lead via the Plivo AI voice agent.
+ * The agent speaks from the lead's own recorded details/requirements — the
+ * backend builds that brief. Progress (status/transcript/summary) arrives
+ * asynchronously through the Plivo event-callback webhook.
+ */
+async function runCall(lead: Lead, goal: string) {
   try {
-    const res = await api.aiCallScript({
-      lead: { id: lead.id, name: lead.name, company: lead.company, email: lead.email, city: lead.city, status: lead.status, score: lead.score, value: lead.value, source: lead.source, notes: lead.notes },
-      goal,
+    const res = await api.dialCall({ lead_id: lead.id, goal });
+    toast.success(`AI agent is calling ${lead.name}`, {
+      description: res.phlo_id ? `Flow run ${res.phlo_id.slice(0, 8)}… queued` : "Call queued",
     });
-    const outcome = res.suggested_outcome ?? "callback";
-    const duration = 60 + Math.floor(Math.random() * 240);
-    const finalStatus = outcome === "voicemail" ? "no_answer" : "completed";
-    await api.updateCallLog({ id: callId, status: finalStatus, outcome, transcript: res.mock_transcript ?? [], summary: res.summary ?? "", duration_sec: duration, ended_at: new Date().toISOString() });
-
-    const newLeadStatus = outcome === "booked" ? "meeting" : outcome === "interested" ? "qualified" : outcome === "not_interested" ? "lost" : "contacted";
-    await updateLeadStatus(lead.id, newLeadStatus);
-
-    if (res.book_appointment) {
-      const when = new Date(); when.setDate(when.getDate() + 2); when.setHours(14, 0, 0, 0);
-      await api.insertAppointment({ lead_id: lead.id, call_id: callId, title: `${goal} with ${lead.name}`, scheduled_at: when.toISOString() });
-    }
+    return true;
   } catch (e) {
-    await api.updateCallLog({ id: callId, status: "failed", summary: (e as Error).message, ended_at: new Date().toISOString() });
+    toast.error(`Couldn't call ${lead.name}`, { description: (e as Error).message });
+    return false;
   }
+}
+
+/** Single per-lead Call button — shows a spinner while that lead is dialling. */
+function CallButton({ lead, goal, dialing, onDial }: { lead: Lead; goal: string; dialing: boolean; onDial: (lead: Lead) => void }) {
+  if (!lead.phone) {
+    return (
+      <span className="text-xs text-muted-foreground">No number</span>
+    );
+  }
+  return (
+    <button
+      onClick={() => onDial(lead)}
+      disabled={dialing}
+      title={`Call ${lead.name} about ${lead.interest ?? "their enquiry"}`}
+      className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-60"
+      style={{ background: "linear-gradient(135deg, #1c2143 0%, #42586f 70%, #70c390 100%)" }}
+    >
+      {dialing ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneCall className="h-4 w-4" />}
+      Call
+    </button>
+  );
+}
+
+/**
+ * The "Ready to call" board — every lead with a phone number, showing the
+ * details the AI agent will speak from, and a one-click Call button.
+ */
+function CallBoard({ leads, goal, onDialed }: { leads: Lead[]; goal: string; onDialed: () => void }) {
+  const [search, setSearch] = useState("");
+  const [dialing, setDialing] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const eligible = leads.filter((l) => l.phone);
+  const filtered = eligible.filter(
+    (l) =>
+      !search ||
+      l.name.toLowerCase().includes(search.toLowerCase()) ||
+      (l.interest ?? "").toLowerCase().includes(search.toLowerCase()),
+  );
+
+  async function dial(lead: Lead) {
+    setDialing(lead.id);
+    try {
+      if (await runCall(lead, goal)) onDialed();
+    } finally {
+      setDialing(null);
+    }
+  }
+
+  async function dialAll() {
+    setBusy(true);
+    try {
+      let ok = 0;
+      for (const lead of filtered) {
+        if (await runCall(lead, goal)) ok++;
+      }
+      if (ok) {
+        toast.success(`${ok} call${ok === 1 ? "" : "s"} placed`);
+        onDialed();
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!eligible.length) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+        <div className="mb-3 flex items-center gap-2">
+          <PhoneCall className="h-4 w-4 text-primary" />
+          <div className="text-sm font-semibold">Ready to call</div>
+        </div>
+        <EmptyState
+          icon={PhoneCall}
+          title="No leads have a phone number yet"
+          description="Add a mobile number to a lead and the AI agent will be able to call them about their requirements."
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-border bg-card shadow-soft">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border p-4">
+        <div className="flex items-center gap-2">
+          <PhoneCall className="h-4 w-4 text-primary" />
+          <div className="text-sm font-semibold">Ready to call</div>
+          <Pill className="bg-muted text-muted-foreground">{eligible.length}</Pill>
+        </div>
+        <div className="flex items-center gap-2">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search leads…"
+            className="w-48 rounded-lg border border-border bg-background py-1.5 px-3 text-xs outline-none focus:ring-1 focus:ring-ring"
+          />
+          <button onClick={dialAll} disabled={busy} className={btnOutline}>
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneCall className="h-4 w-4" />}
+            Call all
+          </button>
+        </div>
+      </div>
+
+      <div className="divide-y divide-border">
+        {filtered.map((lead) => (
+          <div key={lead.id} className="flex flex-wrap items-center gap-4 p-4 transition hover:bg-muted/20">
+            <Avatar name={lead.name} />
+            <div className="min-w-[180px] flex-1">
+              <div className="truncate text-sm font-medium">{lead.name}</div>
+              <div className="truncate text-xs text-muted-foreground">
+                {lead.phone}
+                {lead.company ? ` · ${lead.company}` : ""}
+              </div>
+            </div>
+            {/* The exact details the agent will speak from. */}
+            <div className="min-w-[220px] flex-[2]">
+              {lead.interest && <div className="truncate text-xs font-medium">{lead.interest}</div>}
+              <div className="line-clamp-2 text-xs text-muted-foreground">
+                {lead.notes ?? "No notes — the agent will confirm their requirement on the call."}
+              </div>
+            </div>
+            <CallButton lead={lead} goal={goal} dialing={dialing === lead.id} onDial={dial} />
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="p-8 text-center text-sm text-muted-foreground">No leads match “{search}”.</div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function CallDetail({ call, lead, onClose }: { call: Call; lead: Lead | null; onClose: () => void }) {

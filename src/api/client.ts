@@ -1,3 +1,5 @@
+import type { KnowledgeBundle, KnowledgeBase, KbSection, KbEntry, KbCrawlJob, PublicKb } from "@/lib/knowledge-client";
+
 // Defaults to the deployed backend on Vercel. Override per environment with
 // VITE_API_URL (e.g. "/api" in dev to go through the Vite proxy to localhost:3001).
 // An EMPTY VITE_API_URL is treated as unset so it falls back to the real backend
@@ -100,6 +102,10 @@ export const api = {
 
   // Calls
   getCallLogs: () => request<any[]>("GET", "/messages/calls"),
+  // Places a REAL outbound call via the Plivo AI voice agent, using the lead's
+  // own recorded details/requirements as the agent's brief.
+  dialCall: (data: { lead_id: string; goal?: string }) =>
+    request<{ success: boolean; call_id: string; phlo_id: string | null; message: string | null; brief: string }>("POST", "/messages/calls/dial", data),
   insertCallLogs: (data: any[]) => request<any[]>("POST", "/messages/calls", data),
   updateCallLog: (data: any) => request("POST", "/messages/calls/status", data),
 
@@ -121,4 +127,33 @@ export const api = {
   getConversation: (id: string) => request<{ conversation: any; events: any[] }>("GET", `/conversations/${id}`),
   addConversationNote: (id: string, content: string) => request<any>("POST", `/conversations/${id}/events`, { content }),
   setConversationStatus: (id: string, status: string) => request<any>("POST", `/conversations/${id}/status`, { status }),
+
+  // Knowledge Base — per-user business profile + AI grounding
+  getKnowledge: () => request<KnowledgeBundle>("GET", "/knowledge"),
+  updateKnowledge: (data: Partial<Pick<KnowledgeBase, "title" | "tagline" | "description" | "contact_email" | "contact_phone" | "contact_website" | "contact_address">> & { slug?: string }) =>
+    request<KnowledgeBase>("PUT", "/knowledge", data),
+  createKbSection: (data: { kind?: string; title?: string; body?: string; position?: number }) =>
+    request<KbSection>("POST", "/knowledge/sections", data),
+  updateKbSection: (id: string, data: { kind?: string; title?: string; body?: string; position?: number }) =>
+    request<{ success: boolean }>("PUT", `/knowledge/sections/${id}`, data),
+  deleteKbSection: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/sections/${id}`),
+  createKbEntry: (data: { question: string; answer: string; tags?: string; position?: number }) =>
+    request<KbEntry>("POST", "/knowledge/entries", data),
+  updateKbEntry: (id: string, data: { question?: string; answer?: string; tags?: string; position?: number }) =>
+    request<{ success: boolean }>("PUT", `/knowledge/entries/${id}`, data),
+  deleteKbEntry: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/entries/${id}`),
+  uploadKbFiles: (files: { filename: string; contentType?: string; data: string }[]) =>
+    request<{ success: boolean; indexed: { filename: string; chunks: number }[]; skipped: { filename: string; reason: string }[] }>("POST", "/knowledge/files", { files }),
+  deleteKbSource: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/sources/${id}`),
+  publishKnowledge: () => request<KnowledgeBase>("POST", "/knowledge/publish"),
+  unpublishKnowledge: () => request<KnowledgeBase>("POST", "/knowledge/unpublish"),
+  startKbCrawl: (data: { source_url: string; limit?: number; max_depth?: number; include_paths?: string; exclude_paths?: string }) =>
+    request<KbCrawlJob>("POST", "/knowledge/crawl", data),
+  getKbCrawl: (id: string) => request<KbCrawlJob>("GET", `/knowledge/crawl/${id}`),
+  resumeKbCrawl: (id: string) => request<KbCrawlJob>("POST", `/knowledge/crawl/${id}/resume`),
+  cancelKbCrawl: (id: string) => request<KbCrawlJob>("POST", `/knowledge/crawl/${id}/cancel`),
+  previewKnowledge: (query: string) => request<{ context: string }>("POST", "/knowledge/preview", { query }),
+
+  // Public (read-only) knowledge base
+  getPublicKb: (slug: string) => request<PublicKb>("GET", `/public/kb/${encodeURIComponent(slug)}`),
 };

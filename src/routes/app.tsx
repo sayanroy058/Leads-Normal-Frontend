@@ -2,7 +2,7 @@ import { createFileRoute, Link, Outlet, useRouterState, useNavigate } from "@tan
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard, Bot, Mail, MessageCircle, PhoneCall, ImageIcon, Sparkles, Search, Bell, Sun, Moon, LogOut,
-  Loader2, Users, PanelLeftClose, PanelLeftOpen, Menu, X, AlertTriangle, Inbox, ShieldAlert,
+  Loader2, Users, PanelLeftClose, PanelLeftOpen, Menu, X, AlertTriangle, Inbox, ShieldAlert, BookOpen,
 } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { useAuth } from "@/lib/auth-client";
@@ -23,8 +23,9 @@ const nav: { to: string; label: string; icon: typeof LayoutDashboard; exact?: bo
   { to: "/app/chat", label: "AI Chat", icon: Bot },
   { to: "/app/email", label: "Email Studio", icon: Mail },
   { to: "/app/messages", label: "WhatsApp", icon: MessageCircle, disabled: true },
-  { to: "/app/caller", label: "Voice Agent", icon: PhoneCall, disabled: true },
+  { to: "/app/caller", label: "Voice Agent", icon: PhoneCall },
   { to: "/app/studio", label: "Creatives", icon: ImageIcon },
+  { to: "/app/knowledge", label: "Knowledge Base", icon: BookOpen },
 ];
 
 const adminNav: { to: string; label: string; icon: typeof ShieldAlert; exact?: boolean } = {

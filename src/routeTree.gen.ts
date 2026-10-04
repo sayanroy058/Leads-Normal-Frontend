@@ -23,11 +23,13 @@ import { Route as AppCallerRouteImport } from './routes/app.caller'
 import { Route as AppChatRouteImport } from './routes/app.chat'
 import { Route as AppConversationsRouteImport } from './routes/app.conversations'
 import { Route as AppEmailRouteImport } from './routes/app.email'
+import { Route as AppKnowledgeRouteImport } from './routes/app.knowledge'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppStudioRouteImport } from './routes/app.studio'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as IndustriesEducationRouteImport } from './routes/industries.education'
 import { Route as IndustriesRealEstateRouteImport } from './routes/industries.real-estate'
+import { Route as KbSlugRouteImport } from './routes/kb.$slug'
 import { Route as AppLeadsIndexRouteImport } from './routes/app.leads.index'
 import { Route as AppLeadsLeadIdRouteImport } from './routes/app.leads.$leadId'
 
@@ -101,6 +103,11 @@ const AppEmailRoute = AppEmailRouteImport.update({
   path: '/email',
   getParentRoute: () => AppRoute,
 } as any)
+const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMessagesRoute = AppMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -124,6 +131,11 @@ const IndustriesEducationRoute = IndustriesEducationRouteImport.update({
 const IndustriesRealEstateRoute = IndustriesRealEstateRouteImport.update({
   id: '/industries/real-estate',
   path: '/industries/real-estate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KbSlugRoute = KbSlugRouteImport.update({
+  id: '/kb/$slug',
+  path: '/kb/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppLeadsIndexRoute = AppLeadsIndexRouteImport.update({
@@ -151,11 +163,13 @@ export interface FileRoutesByFullPath {
   '/app/chat': typeof AppChatRoute
   '/app/conversations': typeof AppConversationsRoute
   '/app/email': typeof AppEmailRoute
+  '/app/knowledge': typeof AppKnowledgeRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/studio': typeof AppStudioRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/education': typeof IndustriesEducationRoute
   '/industries/real-estate': typeof IndustriesRealEstateRoute
+  '/kb/$slug': typeof KbSlugRoute
   '/app/': typeof AppIndexRoute
   '/app/leads/$leadId': typeof AppLeadsLeadIdRoute
   '/app/leads/': typeof AppLeadsIndexRoute
@@ -173,11 +187,13 @@ export interface FileRoutesByTo {
   '/app/chat': typeof AppChatRoute
   '/app/conversations': typeof AppConversationsRoute
   '/app/email': typeof AppEmailRoute
+  '/app/knowledge': typeof AppKnowledgeRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/studio': typeof AppStudioRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/education': typeof IndustriesEducationRoute
   '/industries/real-estate': typeof IndustriesRealEstateRoute
+  '/kb/$slug': typeof KbSlugRoute
   '/app': typeof AppIndexRoute
   '/app/leads/$leadId': typeof AppLeadsLeadIdRoute
   '/app/leads': typeof AppLeadsIndexRoute
@@ -197,11 +213,13 @@ export interface FileRoutesById {
   '/app/chat': typeof AppChatRoute
   '/app/conversations': typeof AppConversationsRoute
   '/app/email': typeof AppEmailRoute
+  '/app/knowledge': typeof AppKnowledgeRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/studio': typeof AppStudioRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/education': typeof IndustriesEducationRoute
   '/industries/real-estate': typeof IndustriesRealEstateRoute
+  '/kb/$slug': typeof KbSlugRoute
   '/app/': typeof AppIndexRoute
   '/app/leads/$leadId': typeof AppLeadsLeadIdRoute
   '/app/leads/': typeof AppLeadsIndexRoute
@@ -222,11 +240,13 @@ export interface FileRouteTypes {
     | '/app/chat'
     | '/app/conversations'
     | '/app/email'
+    | '/app/knowledge'
     | '/app/messages'
     | '/app/studio'
     | '/blog/$slug'
     | '/industries/education'
     | '/industries/real-estate'
+    | '/kb/$slug'
     | '/app/'
     | '/app/leads/$leadId'
     | '/app/leads/'
@@ -244,11 +264,13 @@ export interface FileRouteTypes {
     | '/app/chat'
     | '/app/conversations'
     | '/app/email'
+    | '/app/knowledge'
     | '/app/messages'
     | '/app/studio'
     | '/blog/$slug'
     | '/industries/education'
     | '/industries/real-estate'
+    | '/kb/$slug'
     | '/app'
     | '/app/leads/$leadId'
     | '/app/leads'
@@ -267,11 +289,13 @@ export interface FileRouteTypes {
     | '/app/chat'
     | '/app/conversations'
     | '/app/email'
+    | '/app/knowledge'
     | '/app/messages'
     | '/app/studio'
     | '/blog/$slug'
     | '/industries/education'
     | '/industries/real-estate'
+    | '/kb/$slug'
     | '/app/'
     | '/app/leads/$leadId'
     | '/app/leads/'
@@ -289,6 +313,7 @@ export interface RootRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
   IndustriesEducationRoute: typeof IndustriesEducationRoute
   IndustriesRealEstateRoute: typeof IndustriesRealEstateRoute
+  KbSlugRoute: typeof KbSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -391,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppEmailRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/knowledge': {
+      id: '/app/knowledge'
+      path: '/knowledge'
+      fullPath: '/app/knowledge'
+      preLoaderRoute: typeof AppKnowledgeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/messages': {
       id: '/app/messages'
       path: '/messages'
@@ -426,6 +458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesRealEstateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kb/$slug': {
+      id: '/kb/$slug'
+      path: '/kb/$slug'
+      fullPath: '/kb/$slug'
+      preLoaderRoute: typeof KbSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/leads/': {
       id: '/app/leads/'
       path: '/leads'
@@ -449,6 +488,7 @@ interface AppRouteChildren {
   AppChatRoute: typeof AppChatRoute
   AppConversationsRoute: typeof AppConversationsRoute
   AppEmailRoute: typeof AppEmailRoute
+  AppKnowledgeRoute: typeof AppKnowledgeRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppStudioRoute: typeof AppStudioRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -462,6 +502,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppChatRoute: AppChatRoute,
   AppConversationsRoute: AppConversationsRoute,
   AppEmailRoute: AppEmailRoute,
+  AppKnowledgeRoute: AppKnowledgeRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppStudioRoute: AppStudioRoute,
   AppIndexRoute: AppIndexRoute,
@@ -483,6 +524,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
   IndustriesEducationRoute: IndustriesEducationRoute,
   IndustriesRealEstateRoute: IndustriesRealEstateRoute,
+  KbSlugRoute: KbSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
