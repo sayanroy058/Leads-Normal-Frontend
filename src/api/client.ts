@@ -36,6 +36,20 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   return res.json();
 }
 
+export interface ApiKey {
+  id: string;
+  name: string | null;
+  prefix: string | null;
+  last_used_at: string | null;
+  revoked_at: string | null;
+  created_at: string;
+}
+
+/** Returned only at creation — `key` is the raw secret and is never stored. */
+export interface ApiKeyCreated extends ApiKey {
+  key: string;
+}
+
 export interface AdminUser {
   id: number;
   name: string | null;
@@ -138,4 +152,9 @@ export const api = {
 
   // Public (read-only) knowledge base
   getPublicKb: (slug: string) => request<PublicKb>("GET", `/public/kb/${encodeURIComponent(slug)}`),
+
+  // API keys — external REST API access (see API.md)
+  getApiKeys: () => request<ApiKey[]>("GET", "/keys"),
+  createApiKey: (data: { name?: string }) => request<ApiKeyCreated>("POST", "/keys", data),
+  revokeApiKey: (id: string) => request<{ success: boolean }>("DELETE", `/keys/${encodeURIComponent(id)}`),
 };
