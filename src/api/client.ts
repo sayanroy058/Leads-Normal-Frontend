@@ -1,4 +1,4 @@
-import type { KnowledgeBundle, KnowledgeBase, KbSection, KbEntry, KbCrawlJob, PublicKb } from "@/lib/knowledge-client";
+import type { KnowledgeBundle, KnowledgeBase, PublicKb } from "@/lib/knowledge-client";
 
 // Defaults to the deployed backend on Vercel. Override per environment with
 // VITE_API_URL (e.g. "/api" in dev to go through the Vite proxy to localhost:3001).
@@ -128,30 +128,12 @@ export const api = {
   addConversationNote: (id: string, content: string) => request<any>("POST", `/conversations/${id}/events`, { content }),
   setConversationStatus: (id: string, status: string) => request<any>("POST", `/conversations/${id}/status`, { status }),
 
-  // Knowledge Base — per-user business profile + AI grounding
+  // Knowledge Base — per-user free-text business details + AI grounding
   getKnowledge: () => request<KnowledgeBundle>("GET", "/knowledge"),
-  updateKnowledge: (data: Partial<Pick<KnowledgeBase, "title" | "tagline" | "description" | "contact_email" | "contact_phone" | "contact_website" | "contact_address">> & { slug?: string }) =>
+  updateKnowledge: (data: Partial<Pick<KnowledgeBase, "title" | "content">> & { slug?: string }) =>
     request<KnowledgeBase>("PUT", "/knowledge", data),
-  createKbSection: (data: { kind?: string; title?: string; body?: string; position?: number }) =>
-    request<KbSection>("POST", "/knowledge/sections", data),
-  updateKbSection: (id: string, data: { kind?: string; title?: string; body?: string; position?: number }) =>
-    request<{ success: boolean }>("PUT", `/knowledge/sections/${id}`, data),
-  deleteKbSection: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/sections/${id}`),
-  createKbEntry: (data: { question: string; answer: string; tags?: string; position?: number }) =>
-    request<KbEntry>("POST", "/knowledge/entries", data),
-  updateKbEntry: (id: string, data: { question?: string; answer?: string; tags?: string; position?: number }) =>
-    request<{ success: boolean }>("PUT", `/knowledge/entries/${id}`, data),
-  deleteKbEntry: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/entries/${id}`),
-  uploadKbFiles: (files: { filename: string; contentType?: string; data: string }[]) =>
-    request<{ success: boolean; indexed: { filename: string; chunks: number }[]; skipped: { filename: string; reason: string }[] }>("POST", "/knowledge/files", { files }),
-  deleteKbSource: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/sources/${id}`),
   publishKnowledge: () => request<KnowledgeBase>("POST", "/knowledge/publish"),
   unpublishKnowledge: () => request<KnowledgeBase>("POST", "/knowledge/unpublish"),
-  startKbCrawl: (data: { source_url: string; limit?: number; max_depth?: number; include_paths?: string; exclude_paths?: string }) =>
-    request<KbCrawlJob>("POST", "/knowledge/crawl", data),
-  getKbCrawl: (id: string) => request<KbCrawlJob>("GET", `/knowledge/crawl/${id}`),
-  resumeKbCrawl: (id: string) => request<KbCrawlJob>("POST", `/knowledge/crawl/${id}/resume`),
-  cancelKbCrawl: (id: string) => request<KbCrawlJob>("POST", `/knowledge/crawl/${id}/cancel`),
   previewKnowledge: (query: string) => request<{ context: string }>("POST", "/knowledge/preview", { query }),
 
   // Public (read-only) knowledge base
