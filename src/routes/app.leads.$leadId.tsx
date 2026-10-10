@@ -3,11 +3,11 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   ArrowLeft, Save, Trash2, Loader2, Sparkles, Mail, Phone,
   Building2, MapPin, Tag, FileText, DollarSign, AlertTriangle,
-  MessageCircle, PhoneCall, MessagesSquare, Clock,
+  MessageCircle, PhoneCall, MessagesSquare, Clock, Plus, X, ListChecks,
 } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/api/client";
-import type { LeadStatus } from "@/lib/leads-client";
+import type { LeadStatus, LeadRequirement } from "@/lib/leads-client";
 import {
   PageHeader, Pill, Avatar, timeAgo, leadStatusStyles, leadStatusLabels,
   interestLabels, interestStyles, btnPrimary, inputCls,
@@ -38,6 +38,7 @@ type Lead = {
   budget_max: number | null;
   region: string | null;
   urgency: string | null;
+  requirements: LeadRequirement[] | null;
 };
 
 const statuses: LeadStatus[] = ["new", "contacted", "qualified", "meeting", "proposal", "closed", "lost"];
@@ -76,6 +77,18 @@ function LeadDetail() {
   }, [leadId]);
 
   const set = (patch: Partial<Lead>) => setLead((p) => (p ? { ...p, ...patch } : p));
+
+  const setRequirement = (i: number, patch: Partial<LeadRequirement>) =>
+    setLead((p) => {
+      if (!p) return p;
+      const list = [...(p.requirements ?? [])];
+      list[i] = { ...list[i], ...patch };
+      return { ...p, requirements: list };
+    });
+  const addRequirement = () =>
+    setLead((p) => (p ? { ...p, requirements: [...(p.requirements ?? []), { label: "", value: "" }] } : p));
+  const removeRequirement = (i: number) =>
+    setLead((p) => (p ? { ...p, requirements: (p.requirements ?? []).filter((_, idx) => idx !== i) } : p));
 
   async function onSave(e: FormEvent) {
     e.preventDefault();
@@ -131,6 +144,8 @@ function LeadDetail() {
       </div>
     );
   }
+
+  const requirements = lead.requirements ?? [];
 
   const quickActions = [
     { to: "/app/email", label: "AI email", icon: Mail, disabled: false },
@@ -249,6 +264,47 @@ function LeadDetail() {
               <input type="number" min={0} step="any" className={inputCls} value={lead.budget_max ?? ""} onChange={(e) => set({ budget_max: e.target.value === "" ? null : Number(e.target.value) })} />
             </Field>
           </div>
+          <h2 className="mt-6 text-sm font-semibold">Requirements</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            What this lead is looking for — property type, location, budget, handover time, or anything else. Added automatically after an AI call and used to brief the calling agent.
+          </p>
+          <div className="mt-3 space-y-2">
+            {requirements.length === 0 && (
+              <p className="text-xs text-muted-foreground">No requirements recorded yet.</p>
+            )}
+            {requirements.map((r, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <input
+                  className={`${inputCls} sm:max-w-[40%]`}
+                  value={r.label}
+                  onChange={(e) => setRequirement(i, { label: e.target.value })}
+                  placeholder="Label — e.g. Property, Budget, Handover"
+                />
+                <input
+                  className={inputCls}
+                  value={r.value}
+                  onChange={(e) => setRequirement(i, { value: e.target.value })}
+                  placeholder="e.g. 2 BHK Flat in Newtown, Kolkata"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeRequirement(i)}
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground"
+                  aria-label="Remove requirement"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addRequirement}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium transition hover:bg-accent"
+            >
+              <Plus className="h-3.5 w-3.5" /> Add requirement
+            </button>
+          </div>
+
           <div className="mt-4">
             <Field label="Notes">
               <textarea rows={4} className={inputCls} value={lead.notes ?? ""} onChange={(e) => set({ notes: e.target.value || null })} />
@@ -278,6 +334,19 @@ function LeadDetail() {
                 <div className="flex items-center gap-2 text-muted-foreground"><DollarSign className="h-4 w-4 shrink-0" /><span className="tabular-nums">${Number(lead.budget_min ?? 0).toLocaleString()} – ${Number(lead.budget_max ?? 0).toLocaleString()}</span></div>
               )}
               {lead.urgency && <div className="flex items-center gap-2 text-muted-foreground"><Clock className="h-4 w-4 shrink-0" /><span className="capitalize">{lead.urgency}</span></div>}
+              {requirements.length > 0 && (
+                <div className="flex items-start gap-2 text-muted-foreground">
+                  <ListChecks className="mt-0.5 h-4 w-4 shrink-0" />
+                  <div className="space-y-0.5">
+                    {requirements.map((r, i) => (
+                      <div key={i} className="text-xs">
+                        <span className="font-medium text-foreground/80">{r.label || "Requirement"}</span>
+                        {r.value ? `: ${r.value}` : ""}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="flex items-center gap-2 text-muted-foreground"><Tag className="h-4 w-4 shrink-0" /><span className="capitalize">{lead.source ?? "—"}</span></div>
               <div className="flex items-center gap-2 text-muted-foreground"><Sparkles className="h-4 w-4 shrink-0" /><span>Score {lead.score}/100</span></div>
             </div>

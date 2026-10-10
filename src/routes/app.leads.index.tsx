@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Search, Eye, Loader2, Trash2, Download, Wand2, Upload, Users, RefreshCw, X } from "lucide-react";
-import { useLeads, downloadLeadsCsv, normalizePhone, type LeadStatus } from "@/lib/leads-client";
+import { useLeads, downloadLeadsCsv, normalizePhone, formatRequirements, type LeadStatus } from "@/lib/leads-client";
 import { api } from "@/api/client";
 import {
   PageHeader, EmptyState, Avatar, timeAgo, leadStatusStyles, leadStatusLabels, interestLabels, interestStyles, Pill,
@@ -40,7 +40,8 @@ function AllLeads() {
         (l.email ?? "").toLowerCase().includes(s) ||
         (l.company ?? "").toLowerCase().includes(s) ||
         (l.phone ?? "").toLowerCase().includes(s) ||
-        (l.city ?? "").toLowerCase().includes(s)
+        (l.city ?? "").toLowerCase().includes(s) ||
+        formatRequirements(l.requirements).toLowerCase().includes(s)
       );
     });
   }, [leads, q, status]);
@@ -141,7 +142,7 @@ function AllLeads() {
     <div className="space-y-6">
       <PageHeader
         title="All leads"
-        description="Every lead in one place — with interest, budget and stage. Click a row to view or edit."
+        description="Every lead in one place — with requirements, budget and stage. Click a row to view or edit."
       >
         <Link to="/app" className={btnOutline}>
           <Upload className="h-4 w-4" /> Import
@@ -296,7 +297,15 @@ function AllLeads() {
                         <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">{l.company ?? "—"}<div className="text-xs text-muted-foreground">{l.city ?? ""}</div></td>
+                    <td className="px-4 py-3">
+                      {l.company ?? "—"}
+                      <div className="text-xs text-muted-foreground">{l.city ?? ""}</div>
+                      {l.requirements && l.requirements.length > 0 && (
+                        <div className="mt-0.5 max-w-[220px] truncate text-xs text-primary/80" title={formatRequirements(l.requirements)}>
+                          {formatRequirements(l.requirements)}
+                        </div>
+                      )}
+                    </td>
                     <td className="px-4 py-3 tabular-nums">{l.phone ?? "—"}</td>
                     <td className="px-4 py-3 text-xs capitalize text-muted-foreground">{l.source ?? "—"}</td>
                     <td className="px-4 py-3">

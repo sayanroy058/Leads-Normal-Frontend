@@ -9,7 +9,7 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { toast } from "sonner";
 import {
   useLeads, insertLeadsBulk, parseLeadFile, rowsToLeads, normalizePhone, useActivity, updateLeadStatus,
-  type LeadStatus,
+  type LeadStatus, type LeadRequirement,
 } from "@/lib/leads-client";
 import { api } from "@/api/client";
 import {
@@ -510,8 +510,20 @@ function AddLeadModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
     name: "", email: "", phone: "", company: "", city: "",
     source: "manual", status: "new" as LeadStatus, value: "", notes: "",
     interest: "buying", category: "", region: "", budget: "", urgency: "",
+    requirements: [] as LeadRequirement[],
   });
   const set = (patch: Partial<typeof form>) => setForm((f) => ({ ...f, ...patch }));
+
+  const setRequirement = (i: number, patch: Partial<LeadRequirement>) =>
+    setForm((f) => {
+      const list = [...f.requirements];
+      list[i] = { ...list[i], ...patch };
+      return { ...f, requirements: list };
+    });
+  const addRequirement = () =>
+    setForm((f) => ({ ...f, requirements: [...f.requirements, { label: "", value: "" }] }));
+  const removeRequirement = (i: number) =>
+    setForm((f) => ({ ...f, requirements: f.requirements.filter((_, idx) => idx !== i) }));
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -538,6 +550,7 @@ function AddLeadModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
       region: form.region.trim() || null,
       budget_max: form.budget.trim() === "" ? null : Number(form.budget),
       urgency: form.urgency || null,
+      requirements: form.requirements.filter((r) => r.label.trim() || r.value.trim()),
     }]);
     setBusy(false);
     if (error) { toast.error("Couldn't add lead", { description: error.message }); return; }
@@ -616,6 +629,28 @@ function AddLeadModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
               <span className="text-xs font-medium text-muted-foreground">Deal value (USD)</span>
               <input type="number" min={0} step="any" className={inputCls} value={form.value} onChange={(e) => set({ value: e.target.value })} />
             </label>
+            <div className="sm:col-span-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-muted-foreground">Requirements</span>
+                <button type="button" onClick={addRequirement} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
+                  <Plus className="h-3.5 w-3.5" /> Add
+                </button>
+              </div>
+              <div className="mt-2 space-y-2">
+                {form.requirements.length === 0 && (
+                  <p className="text-xs text-muted-foreground">Add what the lead is looking for — property, budget, handover time, etc.</p>
+                )}
+                {form.requirements.map((r, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <input className={`${inputCls} sm:max-w-[40%]`} value={r.label} onChange={(e) => setRequirement(i, { label: e.target.value })} placeholder="Label" />
+                    <input className={inputCls} value={r.value} onChange={(e) => setRequirement(i, { value: e.target.value })} placeholder="Value" />
+                    <button type="button" onClick={() => removeRequirement(i)} className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground" aria-label="Remove requirement">
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
             <label className="block sm:col-span-2">
               <span className="text-xs font-medium text-muted-foreground">Notes</span>
               <textarea rows={3} className={inputCls} value={form.notes} onChange={(e) => set({ notes: e.target.value })} />

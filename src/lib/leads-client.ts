@@ -4,6 +4,14 @@ import { api } from "../api/client";
 // Generic sales pipeline stages.
 export type LeadStatus = "new" | "contacted" | "qualified" | "meeting" | "proposal" | "closed" | "lost";
 
+// A single requirement the lead has expressed — property type, location,
+// budget, handover time, or anything else. Industry-neutral label/value pairs
+// captured manually or filled in automatically by the AI calling agent.
+export interface LeadRequirement {
+  label: string;
+  value: string;
+}
+
 export interface Lead {
   id: string; name: string; email: string | null; phone: string | null;
   company: string | null; source: string | null; status: LeadStatus;
@@ -16,6 +24,15 @@ export interface Lead {
   budget_max: number | null;
   region: string | null;
   urgency: string | null;
+  requirements: LeadRequirement[] | null;
+}
+
+/** Render a requirement list as one line, e.g. "Property: 2 BHK; Budget: ₹60L". */
+export function formatRequirements(reqs: LeadRequirement[] | null | undefined): string {
+  return (reqs ?? [])
+    .map((r) => (r.label && r.value ? `${r.label}: ${r.value}` : r.label || r.value))
+    .filter(Boolean)
+    .join("; ");
 }
 
 export interface ActivityItem { id: string; type: string; text: string; when: string; }
@@ -35,6 +52,7 @@ const EXPORT_COLUMNS: { key: keyof Lead; header: string }[] = [
   { key: "region", header: "Region" },
   { key: "budget_max", header: "Budget" },
   { key: "urgency", header: "Urgency" },
+  { key: "requirements", header: "Requirements" },
   { key: "notes", header: "Notes" },
   { key: "created_at", header: "Created" },
 ];
@@ -48,7 +66,9 @@ function csvField(v: unknown): string {
 
 export function leadsToCsv(leads: Lead[]): string {
   const header = EXPORT_COLUMNS.map((c) => csvField(c.header)).join(",");
-  const rows = leads.map((l) => EXPORT_COLUMNS.map((c) => csvField(l[c.key])).join(","));
+  const rows = leads.map((l) =>
+    EXPORT_COLUMNS.map((c) => csvField(c.key === "requirements" ? formatRequirements(l.requirements) : l[c.key])).join(",")
+  );
   return [header, ...rows].join("\r\n");
 }
 
