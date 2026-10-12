@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { PhoneCall, PhoneIncoming, PhoneOutgoing, Plus, X, Loader2, Sparkles, Play, CheckCircle2, Mic, FileText, Clock, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PhoneCall, PhoneIncoming, PhoneOutgoing, Plus, X, Loader2, Sparkles, Play, Mic, FileText, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/api/client";
 import { useLeads, type Lead } from "@/lib/leads-client";
-import { PageHeader, LaneShell, Pill, Avatar, timeAgo, parseServerDate, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
+import { PageHeader, Pill, Avatar, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
 import { SchedulePanel, fmtIst } from "@/components/voice-schedule";
 
 export const Route = createFileRoute("/app/caller")({
@@ -54,23 +54,6 @@ function VoiceAgent() {
   }
   useEffect(() => { refresh(); }, []);
 
-  const groups = useMemo(() => {
-    const g: Record<string, Call[]> = { queued: [], in_progress: [], completed: [], no_answer: [] };
-    for (const c of calls) {
-      // A call still "in progress" long after it began never got its end report — it is over.
-      const stale = c.status === "in_progress" && Date.now() - parseServerDate(c.created_at) > 30 * 60000;
-      (g[c.status === "failed" ? "no_answer" : stale ? "completed" : c.status] ??= []).push(c);
-    }
-    return g;
-  }, [calls]);
-
-  const lanes: { key: string; label: string; tint: string; Icon: typeof PhoneCall }[] = [
-    { key: "queued", label: "Queued", tint: "gradient-soft", Icon: Clock },
-    { key: "in_progress", label: "Calling", tint: "gradient-peach", Icon: PhoneCall },
-    { key: "completed", label: "Completed", tint: "gradient-mint", Icon: CheckCircle2 },
-    { key: "no_answer", label: "No answer", tint: "gradient-sky", Icon: X },
-  ];
-
   const withPhone = leads.filter((l) => l.phone).length;
 
   return (
@@ -82,45 +65,18 @@ function VoiceAgent() {
             <Sparkles className="h-3 w-3" /> Live
           </Pill>
         }
-        description={`Pick a lead and the AI agent calls them to discuss their own requirements. ${withPhone} of ${leads.length} leads have a phone number.`}
+        description={`Callbacks and site visits the AI agent arranges, every call it makes or takes, and one-click calling. ${withPhone} of ${leads.length} leads have a phone number.`}
       >
         <button onClick={() => setComposing(true)} className={btnPrimary}>
           <Plus className="h-4 w-4" /> Bulk call
         </button>
       </PageHeader>
 
-      {/* What the AI agent arranged: callbacks to make and site visits, in India time. */}
-      <SchedulePanel />
-
-      {/* Primary action: see each lead's details and call them. */}
-      <CallBoard leads={leads} goal={goals[0]} onDialed={refresh} />
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {lanes.map(({ key, label, tint, Icon }) => (
-          <LaneShell key={key} label={label} icon={Icon} tint={tint} count={groups[key]?.length ?? 0}>
-            {(groups[key] ?? []).map((c) => {
-              const lead = leads.find((l) => l.id === c.lead_id);
-              return (
-                <button key={c.id} onClick={() => setOpen(c)} className="w-full rounded-xl border border-border bg-background p-3 text-left transition hover:bg-muted/40">
-                  <div className="flex items-center gap-2">
-                    <Avatar name={lead?.name ?? "Unknown"} className="h-7 w-7 text-[9px]" />
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium">{lead?.name ?? "—"}</div>
-                      <div className="truncate text-xs tabular-nums text-muted-foreground">{lead?.phone ?? ""}</div>
-                    </div>
-                    {c.direction === "inbound" ? <PhoneIncoming className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-label="Inbound call" /> : c.direction === "outbound" ? <PhoneOutgoing className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-label="Outbound call" /> : null}
-                    {c.outcome && <Pill className="bg-success/15 text-success-foreground">{c.outcome.replace("_", " ")}</Pill>}
-                  </div>
-                  <div className="mt-2 line-clamp-2 text-xs leading-snug text-muted-foreground">{c.summary ?? c.goal ?? "—"}</div>
-                  <div className="mt-1.5 text-[11px] text-muted-foreground">{fmtIst(c.created_at)} IST · {timeAgo(c.created_at)}</div>
-                </button>
-              );
-            })}
-            {(groups[key]?.length ?? 0) === 0 && (
-              <div className="rounded-xl border border-dashed border-border p-4 text-center text-xs text-muted-foreground">No calls</div>
-            )}
-          </LaneShell>
-        ))}
+      <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
+        {/* What the AI agent arranged, in India time — plus the call history. */}
+        <SchedulePanel calls={calls} leads={leads} onOpenCall={(id) => setOpen(calls.find((c) => c.id === id) ?? null)} />
+        {/* One-click calling. */}
+        <CallBoard leads={leads} goal={goals[0]} onDialed={refresh} />
       </div>
 
       {composing && <Composer leads={leads} onClose={() => setComposing(false)} onDone={() => { setComposing(false); refresh(); reload(); }} />}
@@ -223,20 +179,17 @@ async function runCall(lead: Lead, goal: string) {
 
 /** Single per-lead Call button — shows a spinner while that lead is dialling. */
 function CallButton({ lead, goal, dialing, onDial }: { lead: Lead; goal: string; dialing: boolean; onDial: (lead: Lead) => void }) {
-  if (!lead.phone) {
-    return (
-      <span className="text-xs text-muted-foreground">No number</span>
-    );
-  }
+  if (!lead.phone) return <span className="text-xs text-muted-foreground">No number</span>;
   return (
     <button
       onClick={() => onDial(lead)}
       disabled={dialing}
       title={`Call ${lead.name} about ${lead.interest ?? "their enquiry"}`}
-      className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-60"
+      aria-label={`Call ${lead.name}`}
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       style={{ background: "linear-gradient(135deg, #1c2143 0%, #42586f 70%, #70c390 100%)" }}
     >
-      {dialing ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneCall className="h-4 w-4" />}
+      {dialing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <PhoneCall className="h-3.5 w-3.5" />}
       Call
     </button>
   );
@@ -302,43 +255,36 @@ function CallBoard({ leads, goal, onDialed }: { leads: Lead[]; goal: string; onD
 
   return (
     <div className="rounded-2xl border border-border bg-card shadow-soft">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border p-4">
-        <div className="flex items-center gap-2">
-          <PhoneCall className="h-4 w-4 text-primary" />
-          <div className="text-sm font-semibold">Ready to call</div>
-          <Pill className="bg-muted text-muted-foreground">{eligible.length}</Pill>
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search leads…"
-            className="w-48 rounded-lg border border-border bg-background py-1.5 px-3 text-xs outline-none focus:ring-1 focus:ring-ring"
-          />
-          <button onClick={dialAll} disabled={busy} className={btnOutline}>
+      <div className="space-y-3 border-b border-border p-4">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary"><PhoneCall className="h-4 w-4" /></div>
+            <div>
+              <div className="text-sm font-semibold leading-tight">Ready to call</div>
+              <div className="text-[11px] text-muted-foreground">{eligible.length} lead{eligible.length === 1 ? "" : "s"} with a phone number</div>
+            </div>
+          </div>
+          <button onClick={dialAll} disabled={busy || filtered.length === 0} className={btnOutline}>
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneCall className="h-4 w-4" />}
             Call all
           </button>
         </div>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name or requirement…"
+          className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-ring"
+        />
       </div>
 
-      <div className="divide-y divide-border">
+      <div className="max-h-[640px] divide-y divide-border overflow-y-auto">
         {filtered.map((lead) => (
-          <div key={lead.id} className="flex flex-wrap items-center gap-4 p-4 transition hover:bg-muted/20">
+          <div key={lead.id} className="flex items-center gap-3 p-3.5 transition hover:bg-muted/30">
             <Avatar name={lead.name} />
-            <div className="min-w-[180px] flex-1">
+            <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-medium">{lead.name}</div>
-              <div className="truncate text-xs text-muted-foreground">
-                {lead.phone}
-                {lead.company ? ` · ${lead.company}` : ""}
-              </div>
-            </div>
-            {/* The exact details the agent will speak from. */}
-            <div className="min-w-[220px] flex-[2]">
-              {lead.interest && <div className="truncate text-xs font-medium">{lead.interest}</div>}
-              <div className="line-clamp-2 text-xs text-muted-foreground">
-                {lead.notes ?? "No notes — the agent will confirm their requirement on the call."}
-              </div>
+              <div className="truncate text-xs tabular-nums text-muted-foreground">{lead.phone}</div>
+              {lead.interest && <div className="mt-0.5 truncate text-xs text-foreground/70">{lead.interest}</div>}
             </div>
             <CallButton lead={lead} goal={goal} dialing={dialing === lead.id} onDial={dial} />
           </div>

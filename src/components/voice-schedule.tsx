@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { CalendarCheck, CalendarClock, Check, Loader2, MapPin, PhoneCall, PhoneIncoming, PhoneOutgoing, RefreshCw, X } from "lucide-react";
+import { AlarmClock, CalendarCheck, CalendarClock, Check, History, Hourglass, Loader2, MapPin, PhoneCall, PhoneIncoming, PhoneOutgoing, RefreshCw, X, type LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { api, type LeadVoice, type VoiceCallback, type VoiceCounts, type VoiceSchedule, type VoiceVisit } from "@/api/client";
-import { EmptyState, Pill, btnOutline, parseServerDate, timeAgo } from "@/components/shared";
+import { Avatar, EmptyState, Pill, btnOutline, parseServerDate, timeAgo } from "@/components/shared";
 import { cn } from "@/lib/utils";
 
 // Everything the AI voice agent arranged — promised callbacks and site visits —
@@ -244,18 +244,59 @@ export function VisitCard({ v, now, onChanged, compact }: { v: VoiceVisit; now: 
   );
 }
 
-type Tab = "today" | "callbacks" | "visits";
+type Tab = "today" | "callbacks" | "visits" | "calls";
 
-function StatChip({ label, value, tone }: { label: string; value: number; tone?: "alert" | "warn" }) {
+export interface CallRow {
+  id: string; lead_id: string | null; direction?: string | null; status: string; outcome: string | null;
+  summary: string | null; duration_sec: number; created_at: string;
+}
+
+const tileTone: Record<string, string> = {
+  alert: "bg-destructive/10 text-destructive",
+  warn: "bg-warning/20 text-foreground",
+  info: "bg-primary/10 text-primary",
+  ok: "bg-success/15 text-success-foreground",
+};
+
+function StatTile({ label, value, icon: Icon, tone, hot }: { label: string; value: number; icon: LucideIcon; tone: keyof typeof tileTone; hot?: boolean }) {
   return (
-    <div className={cn("rounded-xl border px-3 py-2", tone === "alert" && value > 0 ? "border-destructive/40 bg-destructive/5" : tone === "warn" && value > 0 ? "border-warning/50 bg-warning/10" : "border-border bg-background")}>
-      <div className="text-lg font-semibold tabular-nums leading-none">{value}</div>
-      <div className="mt-1 text-[11px] text-muted-foreground">{label}</div>
+    <div className={cn("flex items-center gap-3 rounded-xl border bg-background p-3", hot && value > 0 ? (tone === "alert" ? "border-destructive/40" : "border-warning/60") : "border-border")}>
+      <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-lg", tileTone[tone])}><Icon className="h-4 w-4" /></div>
+      <div className="min-w-0">
+        <div className="text-xl font-semibold tabular-nums leading-none">{value}</div>
+        <div className="mt-1 truncate text-[11px] text-muted-foreground">{label}</div>
+      </div>
     </div>
   );
 }
 
-export function SchedulePanel() {
+function CallRowItem({ c, lead, onOpen }: { c: CallRow; lead?: { name: string; phone: string | null }; onOpen: () => void }) {
+  const live = c.status === "in_progress" && Date.now() - parseServerDate(c.created_at) < 30 * 60000;
+  return (
+    <button onClick={onOpen} className="flex w-full items-center gap-3 rounded-xl border border-border bg-background p-3 text-left transition hover:bg-muted/40">
+      <Avatar name={lead?.name ?? "Unknown"} className="h-9 w-9 text-[10px]" />
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="truncate text-sm font-medium">{lead?.name ?? "Unknown caller"}</span>
+          <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+            {c.direction === "inbound" ? <PhoneIncoming className="h-3 w-3" /> : <PhoneOutgoing className="h-3 w-3" />}
+            {c.direction ?? "outbound"}
+          </span>
+          {live && <Pill className="bg-warning/25 text-foreground">on call</Pill>}
+          {c.status === "failed" || c.status === "no_answer" ? <Pill className="bg-destructive/10 text-destructive">no answer</Pill> : null}
+          {c.outcome && <Pill className="bg-success/15 text-success-foreground">{c.outcome.replace("_", " ")}</Pill>}
+        </div>
+        <div className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{c.summary ?? "No summary yet — open to read the transcript"}</div>
+      </div>
+      <div className="shrink-0 text-right text-[11px] text-muted-foreground">
+        <div>{fmtIst(c.created_at)}</div>
+        {c.duration_sec > 0 && <div className="tabular-nums">{Math.floor(c.duration_sec / 60)}m {c.duration_sec % 60}s</div>}
+      </div>
+    </button>
+  );
+}
+
+export function SchedulePanel({ calls = [], leads = [], onOpenCall }: { calls?: CallRow[]; leads?: { id: string; name: string; phone: string | null }[]; onOpenCall?: (id: string) => void }) {
   const { data, error, now, reload } = useVoiceSchedule();
   const [tab, setTab] = useState<Tab>("today");
   const [showClosed, setShowClosed] = useState(false);
@@ -280,42 +321,45 @@ export function SchedulePanel() {
     { key: "today", label: "Today", n: view.todayCbs.length + view.todayVisits.length },
     { key: "callbacks", label: "Callbacks", n: view.openCbs.length },
     { key: "visits", label: "Site visits", n: view.upVisits.length },
+    { key: "calls", label: "Calls", n: calls.length },
   ];
+  const clock = new Intl.DateTimeFormat("en-IN", { timeZone: IST, hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(now));
 
   return (
     <div className="rounded-2xl border border-border bg-card shadow-soft">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border p-4">
-        <div className="flex items-center gap-2">
-          <CalendarClock className="h-4 w-4 text-primary" />
-          <div className="text-sm font-semibold">Callbacks & site visits</div>
-          <span className="text-[11px] text-muted-foreground">India time{data ? ` · now ${new Intl.DateTimeFormat("en-IN", { timeZone: IST, hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(now))}` : ""}</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 p-5 pb-4">
+        <div>
+          <div className="text-base font-semibold leading-tight">Schedule</div>
+          <div className="mt-0.5 text-xs text-muted-foreground">Callbacks and site visits the AI arranged · India time, now {clock}</div>
         </div>
         <button onClick={reload} className={btnOutline} aria-label="Refresh"><RefreshCw className="h-3.5 w-3.5" /> Refresh</button>
       </div>
 
       {counts && (
-        <div className="grid grid-cols-2 gap-2 border-b border-border p-4 sm:grid-cols-4">
-          <StatChip label="Overdue callbacks" value={counts.callbacks_overdue} tone="alert" />
-          <StatChip label="Due in 15 min" value={Math.max(0, counts.callbacks_due_now - counts.callbacks_overdue)} tone="warn" />
-          <StatChip label="Pending callbacks" value={counts.callbacks_pending} />
-          <StatChip label="Site visits today" value={counts.visits_today} />
+        <div className="grid grid-cols-2 gap-3 px-5 pb-4 lg:grid-cols-4">
+          <StatTile label="Overdue callbacks" value={counts.callbacks_overdue} icon={AlarmClock} tone="alert" hot />
+          <StatTile label="Due in 15 min" value={Math.max(0, counts.callbacks_due_now - counts.callbacks_overdue)} icon={Hourglass} tone="warn" hot />
+          <StatTile label="Pending callbacks" value={counts.callbacks_pending} icon={PhoneCall} tone="info" />
+          <StatTile label="Site visits today" value={counts.visits_today} icon={CalendarCheck} tone="ok" />
         </div>
       )}
 
-      <div className="flex gap-1 border-b border-border px-4 pt-2">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={cn("-mb-px flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm transition", tab === t.key ? "border-primary font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}
-          >
-            {t.label}
-            <span className="rounded-full bg-muted px-1.5 text-[10px] tabular-nums">{t.n}</span>
-          </button>
-        ))}
+      <div className="px-5 pb-1">
+        <div className="inline-flex w-full flex-wrap gap-1 rounded-xl bg-muted/60 p-1 sm:w-auto">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={cn("flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm transition sm:flex-none", tab === t.key ? "bg-card font-medium text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground")}
+            >
+              {t.label}
+              <span className={cn("rounded-full px-1.5 text-[10px] tabular-nums", tab === t.key ? "bg-primary/10 text-primary" : "bg-muted")}>{t.n}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="space-y-2 p-4">
+      <div className="space-y-2.5 p-5">
         {error && !data && <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-xs text-destructive">Couldn't load the schedule: {error}</div>}
         {!data && !error && <div className="flex items-center gap-2 p-6 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Loading…</div>}
 
@@ -354,6 +398,15 @@ export function SchedulePanel() {
               </button>
             )}
             {showClosed && view.pastVisits.map((v) => <VisitCard key={v.id} v={v} now={now} onChanged={reload} compact />)}
+          </>
+        )}
+
+        {tab === "calls" && (
+          <>
+            {calls.length === 0 && <EmptyState icon={History} title="No calls yet" description="Every call the AI agent makes or takes is listed here with its summary and transcript." className="py-8" />}
+            {calls.map((c) => (
+              <CallRowItem key={c.id} c={c} lead={leads.find((l) => l.id === c.lead_id)} onOpen={() => onOpenCall?.(c.id)} />
+            ))}
           </>
         )}
       </div>
