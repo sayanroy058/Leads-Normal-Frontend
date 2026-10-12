@@ -19,6 +19,7 @@ import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppApiKeysRouteImport } from './routes/app.api-keys'
 import { Route as AppCallerRouteImport } from './routes/app.caller'
 import { Route as AppChatRouteImport } from './routes/app.chat'
 import { Route as AppConversationsRouteImport } from './routes/app.conversations'
@@ -81,6 +82,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppAdminRoute = AppAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppApiKeysRoute = AppApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCallerRoute = AppCallerRouteImport.update({
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/marketing': typeof MarketingRoute
   '/pricing': typeof PricingRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/api-keys': typeof AppApiKeysRoute
   '/app/caller': typeof AppCallerRoute
   '/app/chat': typeof AppChatRoute
   '/app/conversations': typeof AppConversationsRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/marketing': typeof MarketingRoute
   '/pricing': typeof PricingRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/api-keys': typeof AppApiKeysRoute
   '/app/caller': typeof AppCallerRoute
   '/app/chat': typeof AppChatRoute
   '/app/conversations': typeof AppConversationsRoute
@@ -209,6 +217,7 @@ export interface FileRoutesById {
   '/marketing': typeof MarketingRoute
   '/pricing': typeof PricingRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/api-keys': typeof AppApiKeysRoute
   '/app/caller': typeof AppCallerRoute
   '/app/chat': typeof AppChatRoute
   '/app/conversations': typeof AppConversationsRoute
@@ -236,6 +245,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/pricing'
     | '/app/admin'
+    | '/app/api-keys'
     | '/app/caller'
     | '/app/chat'
     | '/app/conversations'
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/pricing'
     | '/app/admin'
+    | '/app/api-keys'
     | '/app/caller'
     | '/app/chat'
     | '/app/conversations'
@@ -285,6 +296,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/pricing'
     | '/app/admin'
+    | '/app/api-keys'
     | '/app/caller'
     | '/app/chat'
     | '/app/conversations'
@@ -388,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/api-keys': {
+      id: '/app/api-keys'
+      path: '/api-keys'
+      fullPath: '/app/api-keys'
+      preLoaderRoute: typeof AppApiKeysRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/caller': {
       id: '/app/caller'
       path: '/caller'
@@ -484,6 +503,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
+  AppApiKeysRoute: typeof AppApiKeysRoute
   AppCallerRoute: typeof AppCallerRoute
   AppChatRoute: typeof AppChatRoute
   AppConversationsRoute: typeof AppConversationsRoute
@@ -498,6 +518,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
+  AppApiKeysRoute: AppApiKeysRoute,
   AppCallerRoute: AppCallerRoute,
   AppChatRoute: AppChatRoute,
   AppConversationsRoute: AppConversationsRoute,

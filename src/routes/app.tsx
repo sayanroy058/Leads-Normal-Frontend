@@ -2,13 +2,14 @@ import { createFileRoute, Link, Outlet, useRouterState, useNavigate } from "@tan
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard, Bot, Mail, MessageCircle, PhoneCall, ImageIcon, Sparkles, Search, Bell, Sun, Moon, LogOut,
-  Loader2, Users, PanelLeftClose, PanelLeftOpen, Menu, X, AlertTriangle, Inbox, ShieldAlert, BookOpen,
+  Loader2, Users, PanelLeftClose, PanelLeftOpen, Menu, X, AlertTriangle, Inbox, ShieldAlert, BookOpen, KeyRound,
 } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { useAuth } from "@/lib/auth-client";
 import { api } from "@/api/client";
 import { cn } from "@/lib/utils";
 import { initials, parseServerDate } from "@/components/shared";
+import { useVoiceCounts } from "@/components/voice-schedule";
 
 const SIDEBAR_KEY = "sidebar_collapsed";
 
@@ -26,6 +27,7 @@ const nav: { to: string; label: string; icon: typeof LayoutDashboard; exact?: bo
   { to: "/app/caller", label: "Voice Agent", icon: PhoneCall },
   { to: "/app/studio", label: "Creatives", icon: ImageIcon },
   { to: "/app/knowledge", label: "Knowledge Base", icon: BookOpen },
+  { to: "/app/api-keys", label: "API Keys", icon: KeyRound },
 ];
 
 const adminNav: { to: string; label: string; icon: typeof ShieldAlert; exact?: boolean } = {
@@ -50,6 +52,7 @@ function AppLayout() {
   const [searchValue, setSearchValue] = useState("");
   const [bellOpen, setBellOpen] = useState(false);
   const [breached, setBreached] = useState<BreachedConv[]>([]);
+  const voiceCounts = useVoiceCounts();
 
   function toggleSidebar() {
     setCollapsed((prev) => {
@@ -149,7 +152,7 @@ function AppLayout() {
                 to={adminNav.to as "/app/admin"}
                 title={collapsed ? adminNav.label : undefined}
                 className={cn(
-                  "mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition",
+                  "relative mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition",
                   collapsed && "lg:justify-center lg:px-0",
                   active
                     ? "gradient-brand text-white shadow-glow"
@@ -200,7 +203,19 @@ function AppLayout() {
                 )}
               >
                 <Icon className="h-4 w-4 shrink-0" />
-                <span className={cn(collapsed && "lg:hidden")}>{item.label}</span>
+                <span className={cn("flex-1", collapsed && "lg:hidden")}>{item.label}</span>
+                {item.to === "/app/caller" && (voiceCounts?.attention ?? 0) > 0 && (
+                  <span
+                    title={`${voiceCounts?.callbacks_due_now ?? 0} callback(s) due, ${voiceCounts?.visits_today ?? 0} site visit(s) today`}
+                    className={cn(
+                      "grid min-w-[18px] place-items-center rounded-full px-1.5 text-[10px] font-semibold leading-[18px]",
+                      (voiceCounts?.callbacks_overdue ?? 0) > 0 ? "bg-destructive text-white" : "bg-warning text-foreground",
+                      collapsed && "lg:absolute lg:right-1 lg:top-1",
+                    )}
+                  >
+                    {voiceCounts?.attention}
+                  </span>
+                )}
               </Link>
             );
           })

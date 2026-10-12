@@ -62,6 +62,7 @@ function AIChat() {
         notes: l.notes, // requirements & context live here — the AI needs it to answer "what does this lead want"
         interest: l.interest, category: l.category,
         region: l.region, budget_max: l.budget_max, urgency: l.urgency,
+        requirements: l.requirements,
       }));
       const history = messages
         .filter((m) => m.id !== "m0")

@@ -1,4 +1,4 @@
-import type { KnowledgeBundle, KnowledgeBase, KbSection, KbEntry, KbCrawlJob, PublicKb } from "@/lib/knowledge-client";
+import type { KnowledgeBundle, KnowledgeBase, PublicKb } from "@/lib/knowledge-client";
 
 // Defaults to the deployed backend on Vercel. Override per environment with
 // VITE_API_URL (e.g. "/api" in dev to go through the Vite proxy to localhost:3001).
@@ -34,6 +34,20 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     throw new Error(err.error ?? "Request failed");
   }
   return res.json();
+}
+
+export interface ApiKey {
+  id: string;
+  name: string | null;
+  prefix: string | null;
+  last_used_at: string | null;
+  revoked_at: string | null;
+  created_at: string;
+}
+
+/** Returned only at creation — `key` is the raw secret and is never stored. */
+export interface ApiKeyCreated extends ApiKey {
+  key: string;
 }
 
 export interface AdminUser {
@@ -109,6 +123,17 @@ export const api = {
   insertCallLogs: (data: any[]) => request<any[]>("POST", "/messages/calls", data),
   updateCallLog: (data: any) => request("POST", "/messages/calls/status", data),
 
+  // Voice agent: callbacks, site visits, transcripts
+  getVoiceSchedule: () => request<VoiceSchedule>("GET", "/voice/schedule"),
+  getVoiceCounts: () => request<VoiceCounts>("GET", "/voice/counts"),
+  getLeadVoice: (leadId: string) => request<LeadVoice>("GET", `/voice/leads/${encodeURIComponent(leadId)}`),
+  updateCallback: (id: string, data: { status?: string; when?: string; reason?: string }) =>
+    request<VoiceCallback>("PATCH", `/voice/callbacks/${encodeURIComponent(id)}`, data),
+  updateVisit: (id: string, data: { status?: string; when?: string; location?: string; notes?: string }) =>
+    request<VoiceVisit>("PATCH", `/voice/visits/${encodeURIComponent(id)}`, data),
+  syncCallTranscript: (id: string) =>
+    request<{ ok: boolean; message?: string; turns?: number; duration_sec?: number }>("POST", `/voice/calls/${encodeURIComponent(id)}/sync`),
+
   // Appointments
   getAppointments: () => request<any[]>("GET", "/messages/appointments"),
   insertAppointment: (data: any) => request("POST", "/messages/appointments", data),
@@ -128,32 +153,42 @@ export const api = {
   addConversationNote: (id: string, content: string) => request<any>("POST", `/conversations/${id}/events`, { content }),
   setConversationStatus: (id: string, status: string) => request<any>("POST", `/conversations/${id}/status`, { status }),
 
-  // Knowledge Base — per-user business profile + AI grounding
+  // Knowledge Base — per-user free-text business details + AI grounding
   getKnowledge: () => request<KnowledgeBundle>("GET", "/knowledge"),
-  updateKnowledge: (data: Partial<Pick<KnowledgeBase, "title" | "tagline" | "description" | "contact_email" | "contact_phone" | "contact_website" | "contact_address">> & { slug?: string }) =>
+  updateKnowledge: (data: Partial<Pick<KnowledgeBase, "title" | "content">> & { slug?: string }) =>
     request<KnowledgeBase>("PUT", "/knowledge", data),
-  createKbSection: (data: { kind?: string; title?: string; body?: string; position?: number }) =>
-    request<KbSection>("POST", "/knowledge/sections", data),
-  updateKbSection: (id: string, data: { kind?: string; title?: string; body?: string; position?: number }) =>
-    request<{ success: boolean }>("PUT", `/knowledge/sections/${id}`, data),
-  deleteKbSection: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/sections/${id}`),
-  createKbEntry: (data: { question: string; answer: string; tags?: string; position?: number }) =>
-    request<KbEntry>("POST", "/knowledge/entries", data),
-  updateKbEntry: (id: string, data: { question?: string; answer?: string; tags?: string; position?: number }) =>
-    request<{ success: boolean }>("PUT", `/knowledge/entries/${id}`, data),
-  deleteKbEntry: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/entries/${id}`),
-  uploadKbFiles: (files: { filename: string; contentType?: string; data: string }[]) =>
-    request<{ success: boolean; indexed: { filename: string; chunks: number }[]; skipped: { filename: string; reason: string }[] }>("POST", "/knowledge/files", { files }),
-  deleteKbSource: (id: string) => request<{ success: boolean }>("DELETE", `/knowledge/sources/${id}`),
   publishKnowledge: () => request<KnowledgeBase>("POST", "/knowledge/publish"),
   unpublishKnowledge: () => request<KnowledgeBase>("POST", "/knowledge/unpublish"),
-  startKbCrawl: (data: { source_url: string; limit?: number; max_depth?: number; include_paths?: string; exclude_paths?: string }) =>
-    request<KbCrawlJob>("POST", "/knowledge/crawl", data),
-  getKbCrawl: (id: string) => request<KbCrawlJob>("GET", `/knowledge/crawl/${id}`),
-  resumeKbCrawl: (id: string) => request<KbCrawlJob>("POST", `/knowledge/crawl/${id}/resume`),
-  cancelKbCrawl: (id: string) => request<KbCrawlJob>("POST", `/knowledge/crawl/${id}/cancel`),
   previewKnowledge: (query: string) => request<{ context: string }>("POST", "/knowledge/preview", { query }),
 
   // Public (read-only) knowledge base
   getPublicKb: (slug: string) => request<PublicKb>("GET", `/public/kb/${encodeURIComponent(slug)}`),
+
+  // API keys — external REST API access (see API.md)
+  getApiKeys: () => request<ApiKey[]>("GET", "/keys"),
+  createApiKey: (data: { name?: string }) => request<ApiKeyCreated>("POST", "/keys", data),
+  revokeApiKey: (id: string) => request<{ success: boolean }>("DELETE", `/keys/${encodeURIComponent(id)}`),
 };
+
+// ---- Voice agent types -------------------------------------------------------
+export interface VoiceCallback {
+  id: string; lead_id: string; due_at: string; reason: string | null;
+  status: "pending" | "calling" | "done" | "missed" | "cancelled";
+  attempts: number; last_attempt_at: string | null; source_call_id: string | null; created_at: string;
+  lead_name: string; lead_phone: string | null; lead_interest: string | null; lead_status: string;
+}
+export interface VoiceVisit {
+  id: string; lead_id: string; title: string | null; project: string | null; location: string | null; notes: string | null;
+  scheduled_at: string; duration_min: number | null; status: "confirmed" | "completed" | "cancelled" | "no_show";
+  source: string | null; call_id: string | null; created_at: string;
+  lead_name: string; lead_phone: string | null; lead_interest: string | null;
+}
+export interface VoiceCounts {
+  callbacks_pending: number; callbacks_due_now: number; callbacks_overdue: number; callbacks_today: number;
+  visits_today: number; visits_upcoming: number; attention: number;
+}
+export interface VoiceSchedule { now: string; now_ist: string; callbacks: VoiceCallback[]; visits: VoiceVisit[]; counts: VoiceCounts }
+export interface LeadVoice {
+  callbacks: VoiceCallback[]; visits: VoiceVisit[];
+  calls: { id: string; direction: string | null; status: string; outcome: string | null; summary: string | null; duration_sec: number; started_at: string | null; created_at: string }[];
+}

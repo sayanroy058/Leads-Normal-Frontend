@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { PhoneCall, Plus, X, Loader2, Sparkles, Play, CalendarPlus, CheckCircle2, Mic, FileText, Clock } from "lucide-react";
+import { PhoneCall, PhoneIncoming, PhoneOutgoing, Plus, X, Loader2, Sparkles, Play, CheckCircle2, Mic, FileText, Clock, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/api/client";
 import { useLeads, type Lead } from "@/lib/leads-client";
-import { PageHeader, LaneShell, Pill, Avatar, timeAgo, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
+import { PageHeader, LaneShell, Pill, Avatar, timeAgo, parseServerDate, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
+import { SchedulePanel, fmtIst } from "@/components/voice-schedule";
 
 export const Route = createFileRoute("/app/caller")({
   component: VoiceAgent,
@@ -17,6 +18,7 @@ interface Call {
   lead_id: string | null;
   goal: string | null;
   voice: string | null;
+  direction?: "inbound" | "outbound" | null;
   status: "queued" | "in_progress" | "completed" | "no_answer" | "failed";
   outcome: string | null;
   transcript: { speaker: string; text: string }[];
@@ -25,27 +27,40 @@ interface Call {
   created_at: string;
 }
 
+type Turn = { speaker: string; text: string };
+
+/** The transcript column holds JSON turns, but older/webhook rows may hold plain text — never crash on it. */
+function parseTranscript(raw: unknown): Turn[] {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw as Turn[];
+  if (typeof raw !== "string") return [];
+  try {
+    const v = JSON.parse(raw);
+    if (Array.isArray(v)) return v.filter((t) => t && typeof t.text === "string") as Turn[];
+  } catch { /* plain text */ }
+  const text = raw.trim();
+  return text ? [{ speaker: "agent", text }] : [];
+}
+
 function VoiceAgent() {
   const { leads, reload } = useLeads();
   const [calls, setCalls] = useState<Call[]>([]);
-  const [appts, setAppts] = useState<{ id: string; title: string; scheduled_at: string; lead_id: string | null }[]>([]);
   const [composing, setComposing] = useState(false);
   const [open, setOpen] = useState<Call | null>(null);
 
   async function refresh() {
-    const data = (await api.getCallLogs()).map((c) => ({
-      ...c,
-      transcript: c.transcript ? (JSON.parse(c.transcript) as { speaker: string; text: string }[]) : [],
-    })) as Call[];
+    const data = (await api.getCallLogs()).map((c) => ({ ...c, transcript: parseTranscript(c.transcript) })) as Call[];
     if (data) setCalls(data);
-    const ap = await api.getAppointments() as { id: string; title: string; scheduled_at: string; lead_id: string | null }[];
-    if (ap) setAppts(ap);
   }
   useEffect(() => { refresh(); }, []);
 
   const groups = useMemo(() => {
     const g: Record<string, Call[]> = { queued: [], in_progress: [], completed: [], no_answer: [] };
-    for (const c of calls) (g[c.status === "failed" ? "no_answer" : c.status] ??= []).push(c);
+    for (const c of calls) {
+      // A call still "in progress" long after it began never got its end report — it is over.
+      const stale = c.status === "in_progress" && Date.now() - parseServerDate(c.created_at) > 30 * 60000;
+      (g[c.status === "failed" ? "no_answer" : stale ? "completed" : c.status] ??= []).push(c);
+    }
     return g;
   }, [calls]);
 
@@ -74,6 +89,9 @@ function VoiceAgent() {
         </button>
       </PageHeader>
 
+      {/* What the AI agent arranged: callbacks to make and site visits, in India time. */}
+      <SchedulePanel />
+
       {/* Primary action: see each lead's details and call them. */}
       <CallBoard leads={leads} goal={goals[0]} onDialed={refresh} />
 
@@ -90,10 +108,11 @@ function VoiceAgent() {
                       <div className="truncate text-sm font-medium">{lead?.name ?? "—"}</div>
                       <div className="truncate text-xs tabular-nums text-muted-foreground">{lead?.phone ?? ""}</div>
                     </div>
+                    {c.direction === "inbound" ? <PhoneIncoming className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-label="Inbound call" /> : c.direction === "outbound" ? <PhoneOutgoing className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-label="Outbound call" /> : null}
                     {c.outcome && <Pill className="bg-success/15 text-success-foreground">{c.outcome.replace("_", " ")}</Pill>}
                   </div>
                   <div className="mt-2 line-clamp-2 text-xs leading-snug text-muted-foreground">{c.summary ?? c.goal ?? "—"}</div>
-                  <div className="mt-1.5 text-[11px] text-muted-foreground">{timeAgo(c.created_at)}</div>
+                  <div className="mt-1.5 text-[11px] text-muted-foreground">{fmtIst(c.created_at)} IST · {timeAgo(c.created_at)}</div>
                 </button>
               );
             })}
@@ -103,31 +122,6 @@ function VoiceAgent() {
           </LaneShell>
         ))}
       </div>
-
-      {appts.length > 0 && (
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-          <div className="mb-3 flex items-center gap-2">
-            <CalendarPlus className="h-4 w-4 text-primary" />
-            <div className="text-sm font-semibold">Appointments booked by the agent</div>
-          </div>
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-            {appts.map((a) => {
-              const lead = leads.find((l) => l.id === a.lead_id);
-              return (
-                <div key={a.id} className="rounded-xl border border-border bg-background p-3">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
-                    <div className="truncate text-sm font-medium">{a.title}</div>
-                  </div>
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    {lead?.name ?? "—"} · {new Date(a.scheduled_at).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {composing && <Composer leads={leads} onClose={() => setComposing(false)} onDone={() => { setComposing(false); refresh(); reload(); }} />}
       {open && <CallDetail call={open} lead={leads.find((l) => l.id === open.lead_id) ?? null} onClose={() => setOpen(null)} />}
@@ -358,6 +352,37 @@ function CallBoard({ leads, goal, onDialed }: { leads: Lead[]; goal: string; onD
 }
 
 function CallDetail({ call, lead, onClose }: { call: Call; lead: Lead | null; onClose: () => void }) {
+  const [turns, setTurns] = useState<Turn[]>(call.transcript ?? []);
+  const [duration, setDuration] = useState(call.duration_sec);
+  const [syncing, setSyncing] = useState(false);
+  const [syncNote, setSyncNote] = useState<string | null>(null);
+
+  async function sync(silent = false) {
+    setSyncing(true);
+    setSyncNote(null);
+    try {
+      const r = await api.syncCallTranscript(call.id);
+      if (r.ok) {
+        const fresh = (await api.getCallLogs()).find((c) => c.id === call.id);
+        if (fresh) setTurns(parseTranscript(fresh.transcript));
+        if (r.duration_sec) setDuration(r.duration_sec);
+      } else if (!silent) {
+        setSyncNote(r.message ?? "Transcript isn't available yet.");
+      }
+    } catch (e) {
+      if (!silent) setSyncNote((e as Error).message);
+    } finally {
+      setSyncing(false);
+    }
+  }
+
+  // AI calls keep their transcript with Plivo — fetch it the first time the call is opened.
+  useEffect(() => {
+    if (turns.length === 0 && call.status !== "queued") sync(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const mins = Math.floor(duration / 60);
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/30 p-4 backdrop-blur-sm" onClick={onClose}>
       <div className="grid max-h-[85vh] w-full max-w-2xl grid-rows-[auto_1fr] overflow-hidden rounded-2xl border border-border bg-card shadow-elegant" onClick={(e) => e.stopPropagation()}>
@@ -366,8 +391,11 @@ function CallDetail({ call, lead, onClose }: { call: Call; lead: Lead | null; on
             {lead ? <Avatar name={lead.name} /> : <div className="grid h-9 w-9 place-items-center rounded-xl gradient-sky"><PhoneCall className="h-4 w-4 text-foreground/80" /></div>}
             <div className="min-w-0">
               <div className="truncate text-sm font-semibold">{lead?.name ?? "Unknown"}</div>
-              <div className="truncate text-xs text-muted-foreground">
-                {call.goal} · {Math.round(call.duration_sec / 60)}m {call.duration_sec % 60}s · <span className="capitalize">{call.outcome ?? call.status}</span>
+              <div className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+                {call.direction === "inbound" ? <PhoneIncoming className="h-3 w-3" /> : call.direction === "outbound" ? <PhoneOutgoing className="h-3 w-3" /> : null}
+                <span>{call.direction ? `${call.direction} · ` : ""}{fmtIst(call.created_at)} IST</span>
+                {duration > 0 && <span>· {mins}m {duration % 60}s</span>}
+                <span className="capitalize">· {call.outcome ?? call.status.replace("_", " ")}</span>
               </div>
             </div>
           </div>
@@ -380,18 +408,23 @@ function CallDetail({ call, lead, onClose }: { call: Call; lead: Lead | null; on
               <p className="text-sm leading-relaxed text-muted-foreground">{call.summary}</p>
             </div>
           )}
-          <div className="text-xs font-semibold">Transcript</div>
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-semibold">Transcript {turns.length > 0 && <span className="font-normal text-muted-foreground">· {turns.length} turns</span>}</div>
+            <button onClick={() => sync(false)} disabled={syncing} className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-muted-foreground hover:bg-accent disabled:opacity-60">
+              <RefreshCw className={`h-3 w-3 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Fetching…" : "Refresh transcript"}
+            </button>
+          </div>
           <div className="mt-2 space-y-2">
-            {(call.transcript ?? []).map((t, i) => (
+            {turns.map((t, i) => (
               <div key={i} className={`flex gap-2 ${t.speaker === "agent" ? "" : "justify-end"}`}>
                 <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm ${t.speaker === "agent" ? "rounded-bl-md bg-muted/60" : "rounded-br-md gradient-brand text-white"}`}>
-                  <div className="text-[10px] uppercase tracking-wide opacity-70">{t.speaker}</div>
+                  <div className="text-[10px] uppercase tracking-wide opacity-70">{t.speaker === "agent" ? "AI agent" : "Caller"}</div>
                   {t.text}
                 </div>
               </div>
             ))}
-            {(!call.transcript || call.transcript.length === 0) && (
-              <EmptyState icon={Mic} title="No transcript captured" className="py-8" />
+            {turns.length === 0 && (
+              <EmptyState icon={Mic} title={syncing ? "Fetching transcript…" : "No transcript captured"} description={syncNote ?? undefined} className="py-8" />
             )}
           </div>
         </div>
