@@ -4,7 +4,7 @@ import { PhoneCall, PhoneIncoming, PhoneOutgoing, Plus, X, Loader2, Sparkles, Pl
 import { toast } from "sonner";
 import { api } from "@/api/client";
 import { useLeads, type Lead } from "@/lib/leads-client";
-import { PageHeader, Pill, Avatar, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
+import { PageHeader, Pill, Avatar, leadStatusStyles, leadStatusLabels, btnPrimary, btnOutline, inputCls, EmptyState } from "@/components/shared";
 import { SchedulePanel, fmtIst } from "@/components/voice-schedule";
 
 export const Route = createFileRoute("/app/caller")({
@@ -72,12 +72,11 @@ function VoiceAgent() {
         </button>
       </PageHeader>
 
-      <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
-        {/* What the AI agent arranged, in India time — plus the call history. */}
-        <SchedulePanel calls={calls} leads={leads} onOpenCall={(id) => setOpen(calls.find((c) => c.id === id) ?? null)} />
-        {/* One-click calling. */}
-        <CallBoard leads={leads} goal={goals[0]} onDialed={refresh} />
-      </div>
+      {/* What the AI agent arranged, in India time — plus the call history. */}
+      <SchedulePanel calls={calls} leads={leads} onOpenCall={(id) => setOpen(calls.find((c) => c.id === id) ?? null)} />
+
+      {/* One-click calling. */}
+      <CallBoard leads={leads} goal={goals[0]} onDialed={refresh} />
 
       {composing && <Composer leads={leads} onClose={() => setComposing(false)} onDone={() => { setComposing(false); refresh(); reload(); }} />}
       {open && <CallDetail call={open} lead={leads.find((l) => l.id === open.lead_id) ?? null} onClose={() => setOpen(null)} />}
@@ -186,10 +185,10 @@ function CallButton({ lead, goal, dialing, onDial }: { lead: Lead; goal: string;
       disabled={dialing}
       title={`Call ${lead.name} about ${lead.interest ?? "their enquiry"}`}
       aria-label={`Call ${lead.name}`}
-      className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+      className="inline-flex shrink-0 items-center gap-2 rounded-xl px-5 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       style={{ background: "linear-gradient(135deg, #1c2143 0%, #42586f 70%, #70c390 100%)" }}
     >
-      {dialing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <PhoneCall className="h-3.5 w-3.5" />}
+      {dialing ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneCall className="h-4 w-4" />}
       Call
     </button>
   );
@@ -254,46 +253,64 @@ function CallBoard({ leads, goal, onDialed }: { leads: Lead[]; goal: string; onD
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card shadow-soft">
-      <div className="space-y-3 border-b border-border p-4">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary"><PhoneCall className="h-4 w-4" /></div>
-            <div>
-              <div className="text-sm font-semibold leading-tight">Ready to call</div>
-              <div className="text-[11px] text-muted-foreground">{eligible.length} lead{eligible.length === 1 ? "" : "s"} with a phone number</div>
-            </div>
+    <section className="rounded-2xl border border-border bg-card shadow-soft">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-5 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary"><PhoneCall className="h-5 w-5" /></div>
+          <div>
+            <h2 className="text-base font-semibold leading-tight">Ready to call</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">{eligible.length} lead{eligible.length === 1 ? "" : "s"} with a phone number — the AI agent calls from each lead&apos;s own details</p>
           </div>
+        </div>
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or requirement…"
+            className="min-w-0 flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring sm:w-72 sm:flex-none"
+          />
           <button onClick={dialAll} disabled={busy || filtered.length === 0} className={btnOutline}>
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneCall className="h-4 w-4" />}
-            Call all
+            Call all{filtered.length !== eligible.length ? ` (${filtered.length})` : ""}
           </button>
         </div>
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by name or requirement…"
-          className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-ring"
-        />
       </div>
 
-      <div className="max-h-[640px] divide-y divide-border overflow-y-auto">
+      <div className="grid grid-cols-1 gap-3 p-5 pt-1 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((lead) => (
-          <div key={lead.id} className="flex items-center gap-3 p-3.5 transition hover:bg-muted/30">
-            <Avatar name={lead.name} />
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-medium">{lead.name}</div>
-              <div className="truncate text-xs tabular-nums text-muted-foreground">{lead.phone}</div>
-              {lead.interest && <div className="mt-0.5 truncate text-xs text-foreground/70">{lead.interest}</div>}
+          <article key={lead.id} className="flex flex-col rounded-xl border border-border bg-background p-4 transition hover:border-primary/40 hover:shadow-soft">
+            <div className="flex items-start gap-3">
+              <Avatar name={lead.name} className="h-10 w-10" />
+              <div className="min-w-0 flex-1">
+                <div className="break-words text-sm font-semibold leading-snug">{lead.name}</div>
+                <div className="mt-0.5 text-xs tabular-nums text-muted-foreground">{lead.phone}</div>
+              </div>
+              <Pill className={leadStatusStyles[lead.status]}>{leadStatusLabels[lead.status]}</Pill>
             </div>
-            <CallButton lead={lead} goal={goal} dialing={dialing === lead.id} onDial={dial} />
-          </div>
+
+            <div className="mt-3 flex-1 space-y-2 text-sm">
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Looking for</div>
+                <div className="mt-0.5 break-words leading-snug">{lead.interest || <span className="text-muted-foreground">Not recorded — the agent will ask</span>}</div>
+              </div>
+              {lead.notes && (
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Notes</div>
+                  <div className="mt-0.5 line-clamp-3 break-words text-xs leading-relaxed text-muted-foreground">{lead.notes}</div>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 flex justify-end border-t border-border pt-3">
+              <CallButton lead={lead} goal={goal} dialing={dialing === lead.id} onDial={dial} />
+            </div>
+          </article>
         ))}
         {filtered.length === 0 && (
-          <div className="p-8 text-center text-sm text-muted-foreground">No leads match “{search}”.</div>
+          <div className="col-span-full p-8 text-center text-sm text-muted-foreground">No leads match “{search}”.</div>
         )}
       </div>
-    </div>
+    </section>
   );
 }
 
